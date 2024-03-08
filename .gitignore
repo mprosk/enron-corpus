@@ -1,5 +1,8 @@
 # project specific ignores
 enron_mail_20150507.tar.gz
+maildir/
+misc/
+*.pickle
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
