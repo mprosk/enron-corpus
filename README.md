@@ -30,14 +30,15 @@ List of weird, interesting, funny, or otherwise notable emails in the corpus
 
 - [Interesting facts, Hmmmm](maildir/lenhart-m/sent/1521.)
 - [Re: RESULTS OF MAN NIGHT](maildir/parks-j/inbox/646.)
-
 - [Advice to Give Your Daughters](maildir/ring-a/sent/17.)
 - [Re: Hey](maildir/guzman-m/discussion_threads/374.)
 - [Fw: This Is the Captain Speaking](maildir/giron-d/sent/599.)
+- [Holiday Party - Canceled](maildir/germany-c/deleted_items/311.)
+- [RE: Thanksgiving](maildir/tholt-j/sent_items/273.)
 
 ## Broken files
 
-List of files with Unicode decode exceptions when opening the whole file as text. Note that these parse file with `email.BytesParser`
+List of files with Unicode decode exceptions when opening the whole file as text. Note that these parse correctly when using `email.BytesParser` and opening the file with `'rb'`
 
 [maildir/kitchen-l/_americas/esvl/87.](maildir/kitchen-l/_americas/esvl/87.) has invalid email addresses in the `To` field
 
@@ -134,3 +135,53 @@ maildir/horton-s/discussion_threads/60.
 maildir/horton-s/discussion_threads/198.
 ```
 
+## Enron Collapse Timeline
+
+Source: https://www.famous-trials.com/enron/1789-chronology
+
+| Date                 | Event                                                        |
+| -------------------- | ------------------------------------------------------------ |
+| 1985                 | Enron is founded by Ken Lay after merging Houston Natural Gas and InterNorth. |
+| August 1, 1990       | Jeffrey Skilling assumes job as chairman and chief executive of Enron Finance. |
+| December 3, 1990     | Andy Fastow is hired by Skilling for a position in Enron's new finance business |
+| January 30, 1992     | The SEC allows Enron to use mark-to market accounting instead of traditional, accrual accounting. The new accounting system allows Enron to begin reporting fast-growing profits. |
+| 1992                 | Enron becomes the largest seller of natural gas in North America. |
+| 1999                 | Chief Financial Officer Andy Fastow forms two limited partnerships, LJM Cayman and LJM2 for the purpose of buying Enron's poorly assets. Fastow receives an exemption from conflict-of-interest rules by the Board of Directors, thus allowing him to manage the companies. |
+| July 2000            | Enron and Blockbuster enter into a 20-year agreement to stream on-demand video entertainment. Enron claims $110 million in profits from the deal, even though the network would fail and Blockbuster withdraws from the contract. |
+| August 23, 2000      | Enron stock its an all-time price high of $90 a share.       |
+| September 6, 2000    | Andy Fastow and CAO Richard Causey meet to discuss the "Global Galactic" agreement that protects Fastow from losses in the side deals he has made for Enron with LJM. |
+| December 31, 2000    | Enron finishes the tear with its stock price up 87% to $83.13, 70 times earnings. Fortune magazine calls it the most innovative large company in the United States. |
+| March 5, 2001        | Bethany McLean publishes an article *Is Enron Overpriced?* in Fortune magazine. She writes that investors are generally clueless as to how Enron earns its reported profits. |
+| April 17, 2001       | Skilling verbally attacks an analyst who questions Enron's failure to release a balance sheet along with its earnings statements, calling the an "asshole." |
+| **August 14, 2001**  | Skilling resigns as CEO of Enron. Lay re-assumes the job as CEO. |
+| August 15, 2001      | Vice president for development at Enron, Sherron Watkins, sends an anonymous letter to Lay criticizing the company's accounting practices. In the letter she says she is worried Enron "will implode in a wave of accounting scandals." |
+| August 22, 2001      | Watkins meets with Lay and gives him a 6-page letter detailing problems with Enron's accounting practices. Lay promises to take her concerns to the company's law firm, Vinson & Ellis. |
+| September 9, 2001    | A manager of an important hedge fund says "Enron stock is trading under a cloud" as its stock price continues to fall. |
+| October 16, 2001     | Enron announces that it will have to restate its earnings from 1997 to 2000 to correct accounting violations. |
+| October 22, 2001     | The Enron Board learns that Fastow received $30 million (more, actually) from managing LJM partnerships. Enron's stock drops 20% in a day after the SEC announces that it will investigate several Enron deals. |
+| October 24, 2001     | Enron fires Andy Fastow.                                     |
+| October 30, 2001     | Credit rating agencies lower Enron's credit rating. From August through the end of October, Ken Lay has sold 918,000 shares of Enron while insisting to others the company was in good financial shape. |
+| November 2001        | In a desperate effort to save itself from bankruptcy, Enron explores merger or acquisition possibilities with rival Dynegy. |
+| November 28, 2001    | Dynegy says it will not acquire Enron. Enron's credit rating is reduced to junk status. Enron's stock price falls to $0.61. |
+| **December 2, 2001** | Enron seeks Chapter 11 bankruptcy protection.                |
+| December 2001        | Skilling tells the *New York Times* , "I had no idea that the compay was in anything but excellent shape." |
+| January 23, 2002     | Ken lay resigns as Enron's chairman and CEO.                 |
+| February 7, 2002     | Skilling testifies before about the Enron collapse before a congressional committee; Fastow invokes his 5th Amendment protection and refuses to testify. |
+| June 15, 2002        | Enron's auditing firm, Arthur Andersen, is convicted of obstruction of justice in connection with its shredding of Enron documents. |
+| July 30, 2002        | President George W. Bush signs the Sarbanes-Oxley Act imposing new accounting and reporting obligations on American businesses. |
+| August 31, 2002      | Enron accounting firm Arthur Andersen surrenders its CPA license and its 85,000 employees lose their jobs. |
+| October 31, 2002     | Andy Fastow is indicted on 78 counts of fraudulent conduct.  |
+| May 1, 2003          | Lea Fastow, the wife of Andy Fastow, is charged with conspiracy and tax evasion. |
+| January 14, 2004     | Andy Fastow enters into a plea agreement and promises to cooperate in the prosecution of other Enron executives. |
+| February 18, 2004    | A grand jury in Houston indicts Jeff Skilling on 35 counts, including charges of fraud, insider trading, and conspiracy. |
+| July 7, 2004         | A grand jury indicts Ken Lay on 11 counts, including charges of wire fraud, securities fraud, bank fraud, and conspiracy. The next day, Lay surrenders to the FBI. |
+| December 28, 2005    | Richard Causey enters into a plea bargain agreement with the government. |
+| January 30, 2006     | Jury selection begins in the trial of Lay and Skilling.      |
+| May 17, 2006         | The jury begins deliberation in the trial of Lay and Skilling. |
+| May 25, 2006         | The jury convicts Skilling of 19 of 28 counts of wire fraud and securities fraud. Lay is convicted on all six counts of fraud. |
+| July 5, 2006         | While staying in a cabin outside Aspen, Colorado with his wife, Ken Lay suffers a heart attack and dies. |
+| September 26, 2006   | Andy Fatow is sentenced to six years in prison.              |
+| October 23, 2006     | Judge Lakes sentences Skilling to 24 years in prison and sets a fine of $45 million. |
+| December 13, 2006    | Jeff Skilling begins serving his sentence in a low-security prison in Waseca, Minnesota. |
+| December 16, 2011    | Andy Fastow is released from prison.                         |
+| June 21, 2013        | Judge Lake reduces Skilling's sentence to 14 years (and, with good-time credits, he could be released by 2017). |

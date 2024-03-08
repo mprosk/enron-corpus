@@ -4,7 +4,7 @@ from datetime import datetime
 from pathlib import Path
 import pickle
 
-
+DATE_FORMAT_STRING = "%a, %d %b %Y %H:%M:%S %z"
 PREFIXES_IGNORE = [
     "To:",
     "From:",
@@ -26,21 +26,32 @@ PREFIXES_IGNORE = [
 class EnronEmail:
     """Class for containing metadata"""
 
-    def __init__(self, file_path: Path):
-        self.filepath = file_path
-        self.body = ""
-        with open(self.filepath, mode='rb') as file:
+    def __init__(self, file_path: Path, load_body: bool = False):
+        self.file_path = file_path
+        with open(self.file_path, mode='rb') as file:
             self.msg = BytesParser(policy=policy.default).parse(file)
         self.subject = self.msg.get('Subject', '[ERR]')
         if not self.subject:
             self.subject = "(no subject)"
         self.sender = self.msg.get('From', '[ERR]')
         self.recip = self.msg.get('To', '[ERR]')
-        self.date = datetime.strptime(self.msg.get('Date'), "%a, %d %b %Y %H:%M:%S %z")
+        self.date = datetime.strptime(self.msg.get('Date'), DATE_FORMAT_STRING)
+        self.body = None
+        if load_body:
+            self.body = self.msg.get_payload(decode=True).decode('utf-8')
+
+    def get_body(self):
+        with open(self.file_path, mode='rb') as file:
+            self.msg = BytesParser(policy=policy.default).parse(file)
         self.body = self.msg.get_payload(decode=True).decode('utf-8')
+
+    def get_number_of_recipients(self):
+        return self.recip.count('@')
 
     def get_clean_body(self) -> list:
         """Parses the body text of a decoded email and attempts to isolate just the interesting text"""
+        if self.body is None:
+            self.get_body()
         output = []
         in_body = True
         for line in self.body.splitlines():
@@ -65,6 +76,17 @@ class EnronEmail:
                 output.append(line)
         return output
 
+    def print_email(self):
+        print(f" {self.file_path} ".center(80, "="))
+        print("FROM:   ", self.sender)
+        print("TO:     ", self.recip)
+        print("DATE:   ", self.date)
+        print("SUBJECT:", self.subject)
+        print()
+        for line in self.get_clean_body():
+            print(line)
+        print()
+
 
 ################################################################################
 # EMAIL PARSING UTILITIES
@@ -73,78 +95,7 @@ class EnronEmail:
 def get_email_date(file_path: str) -> datetime:
     with open(file_path, mode='rb') as file:
         msg = BytesParser(policy=policy.default).parse(file)
-    return datetime.strptime(msg.get('Date'), "%a, %d %b %Y %H:%M:%S %z")
-
-
-################################################################################
-# FILES BY DATE UTILITIES
-################################################################################
-
-def generate_files_by_date(file_list: list) -> dict:
-    """
-    Iterates through all files in the given file_list
-    and returns a list of EnronEmail objects
-    """
-    files_by_date = dict()
-    total = len(file_list)
-    for i, file_path in enumerate(file_list):
-        try:
-            date = get_email_date(file_path).date()
-            files_by_date.setdefault(date, []).append(file_path)
-        except Exception as e:
-            print(f"Error parsing {file_path}")
-            raise e
-
-        if i % 1000 == 0:
-            print(f"{i} of {total} ({round(i / total * 100)}%)")
-    return files_by_date
-
-
-def write_files_by_date_to_pickle(file_list: list):
-    """Generates the list of files in the given Path and writes the resulting list as a Pickle"""
-    files_by_date = generate_files_by_date(file_list)
-    store_pickle(files_by_date, "files_by_date.pickle")
-
-
-def read_files_by_date_from_pickle(pickle_path: Path = Path("files_by_date.pickle")) -> dict:
-    return load_pickle(pickle_path)
-
-
-################################################################################
-# FILE LIST UTILITIES
-################################################################################
-
-def generate_file_list(maildir: Path) -> list:
-    """
-    Recursively iterates through all files in the given Path
-    and returns a list of all paths that are a file
-    """
-    if not maildir.is_dir():
-        return []
-
-    print(f"Generating file list for {maildir.as_posix()}")
-
-    file_list = []
-    for file_path in maildir.iterdir():
-        if file_path.is_file():
-            file_list.append(file_path.as_posix())
-        elif file_path.is_dir():
-            file_list.extend(generate_file_list(file_path))
-        else:
-            print(file_path, "is neither a file nor a directory...")
-
-    print(f"{len(file_list)} files found")
-    return file_list
-
-
-def write_file_list_to_pickle(maildir: Path):
-    """Generates the list of files in the given Path and writes the resulting list as a Pickle"""
-    file_list = generate_file_list(maildir)
-    store_pickle(file_list, "file_list.pickle")
-
-
-def read_file_list_from_pickle(pickle_path: Path = Path("file_list.pickle")) -> list:
-    return load_pickle(pickle_path)
+    return datetime.strptime(msg.get('Date'), DATE_FORMAT_STRING)
 
 
 ################################################################################
@@ -162,12 +113,48 @@ def store_pickle(item, pickle_path):
 
 
 ################################################################################
+# DATE RANGE UTILITIES
+################################################################################
 
-if __name__ == '__main__':
-    # write_files_by_date_to_pickle(read_file_list_from_pickle())
+def parse_date_range(daterange: str):
+    """
+    Parses a date range string into datetime.date ranges
+    :param daterange: date range string
+    :return: tuple of ( [ datetime.date | None ], [ datetime.date | None ] )
+    """
+    def parse_date_string(date: str):
+        if not date:
+            return None
+        for f in ["%Y-%m-%d", "%Y-%m", "%Y"]:
+            try:
+                return datetime.strptime(date, f).date()
+            except ValueError:
+                continue
+        return None
+    tokens = daterange.split(":")
+    start = parse_date_string(tokens[0])
+    end = parse_date_string(tokens[1])
+    return start, end
 
-    # files_by_date = read_files_by_date_from_pickle()
-    # dates = sorted(list(files_by_date.keys()))
-    # for date in dates:
-    #     print(f"{date}: {len(files_by_date[date])}")
-    pass
+
+def get_files_in_date_range(files_by_date: dict, start, end) -> list:
+    """
+    Creates a list of email file paths that fall within a given date range
+    If `start` or `end` is None, it indicates no limit in that direction
+    E.g. if `start` is a datetime.date and `end` is None, the returned list will
+    include all emails with dates that are on or after the `start` date
+    :param files_by_date: dictionary mapping of dates to list of email paths
+    :param start: datetime.date or None indicating the lower bounds of the range
+    :param end: datetime.date or None indicating the upper bounds of the range
+    :return: list of email file paths that fall within the date range
+    """
+    file_list = []
+    for date, files in files_by_date.items():
+        include = True
+        if start:
+            include &= date >= start
+        if end is not None:
+            include &= date <= end
+        if include:
+            file_list.extend(files)
+    return file_list
