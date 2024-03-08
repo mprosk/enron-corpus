@@ -24,7 +24,7 @@ maildir/kean-s/archiving/untitled/5745.
 
 
 
-## Funny Ones
+## Saved Emails
 
 List of weird, interesting, funny, or otherwise notable emails in the corpus
 
@@ -38,9 +38,17 @@ List of weird, interesting, funny, or otherwise notable emails in the corpus
 
 ## Broken files
 
-List of files with Unicode decode exceptions when opening the whole file as text. Note that these parse correctly when using `email.BytesParser` and opening the file with `'rb'`
+List of files with invalid email addresses in the `To` header, causing an exception during parsing. The invalid email addresses appear to be ones that start with a period, such as `.flood@enron.com`  or `.costa@enron.com` 
 
-[maildir/kitchen-l/_americas/esvl/87.](maildir/kitchen-l/_americas/esvl/87.) has invalid email addresses in the `To` field
+```
+maildir/kitchen-l/_americas/esvl/87.
+maildir/kitchen-l/_americas/netco_restart/3.
+maildir/kitchen-l/_americas/netco_eol/82.
+maildir/kitchen-l/_americas/netco_eol/83.
+maildir/kitchen-l/sent_items/24.
+```
+
+List of files with Unicode decode exceptions when opening the whole file as text with `mode='r'`. These files parse correctly when using `email.BytesParser` and opening the file with `mode='rb'`
 
 ```
 maildir/whalley-g/inbox/390.

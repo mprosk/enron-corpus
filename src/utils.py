@@ -7,7 +7,7 @@ import pickle
 DATE_FORMAT_STRING = "%a, %d %b %Y %H:%M:%S %z"
 PREFIXES_IGNORE = [
     "To:",
-    "From:",
+"From:",
     "Date:",
     "Sent:",
     "Re:",
@@ -58,7 +58,7 @@ class EnronEmail:
             line = line.strip()
             while line.startswith(">"):
                 line = line[1:].strip()
-            if line.startswith("----"):
+            if line.startswith("----") and ("forward" in line.lower()):
                 in_body = False
                 continue
             if line.startswith("Subject:") or line.startswith("Subj:"):
