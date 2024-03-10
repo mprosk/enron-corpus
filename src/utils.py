@@ -7,17 +7,31 @@ import pickle
 DATE_FORMAT_STRING = "%a, %d %b %Y %H:%M:%S %z"
 PREFIXES_IGNORE = [
     "To:",
-"From:",
+    "From:",
     "Date:",
     "Sent:",
     "Re:",
     "cc:",
+    "Cc:",
     "bcc:",
     "Tel:",
     "Fax:",
 ]
 """List of line prefixes that indicate a LINE we want to ignore"""
 
+SMUBETAS = [
+    "_________________________________________________________________",
+    "Get your FREE download of MSN Explorer at http://explorer.msn.com",
+    "To unsubscribe from this group, send an email",
+    "smu-betas-unsubscribe@egroups.com",
+    "Your use of Yahoo! Groups is subject to",
+    "Your use of  Yahoo!",
+    "Yahoo! Groups Sponsor",
+    "ADVERTISEMENT",
+    "[IMAGE]",
+    "Join 18 million Eudora users by signing up for a free Eudora Web-Mail",
+    "account at http://www.eudoramail.com"
+]
 
 ################################################################################
 # EMAIL METADATA CLASS
@@ -40,10 +54,13 @@ class EnronEmail:
         if load_body:
             self.body = self.msg.get_payload(decode=True).decode('utf-8')
 
-    def get_body(self):
+    def get_body(self) -> str:
+        if self.body:
+            return self.body
         with open(self.file_path, mode='rb') as file:
             self.msg = BytesParser(policy=policy.default).parse(file)
         self.body = self.msg.get_payload(decode=True).decode('utf-8')
+        return self.body
 
     def get_number_of_recipients(self):
         return self.recip.count('@')
@@ -64,7 +81,7 @@ class EnronEmail:
             if line.startswith("Subject:") or line.startswith("Subj:"):
                 in_body = True
                 continue
-            if any(line.startswith(prefix) for prefix in PREFIXES_IGNORE):
+            if any(line.startswith(prefix) for prefix in SMUBETAS):
                 continue
             if in_body:
                 # Only append an empty line if the previous line had content
@@ -154,7 +171,7 @@ def get_files_in_date_range(files_by_date: dict, start, end) -> list:
         if start:
             include &= date >= start
         if end is not None:
-            include &= date <= end
+            include &= date < end
         if include:
             file_list.extend(files)
     return file_list

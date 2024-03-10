@@ -1,10 +1,11 @@
 import email.errors
+import re
 from pathlib import Path
 import utils
 
 
 ################################################################################
-# FILE LIST
+# FILE LIST GENERATION
 ################################################################################
 
 def generate_file_list(maildir: Path, pickle_path: str = "pickle/file_list.pickle"):
@@ -38,7 +39,7 @@ def generate_file_list(maildir: Path, pickle_path: str = "pickle/file_list.pickl
 # FILES BY DATE
 ################################################################################
 
-def generate_files_by_date(file_list: list) -> dict:
+def organize_files_by_date(file_list: list, pickle_path: str = "pickle/files_by_date.pickle") -> dict:
     """
     Iterates through all files in the given file_list
     and creates a dictionary mapping a datetime.date
@@ -61,18 +62,22 @@ def generate_files_by_date(file_list: list) -> dict:
         if i % 1000 == 0:
             print(f"{i} of {total} ({round(i / total * 100)}%)")
 
-    utils.store_pickle(files_by_date, "pickle/files_by_date.pickle")
+    utils.store_pickle(files_by_date, pickle_path)
     print("The following file(s) could not be fully parsed:")
     for fail in errors:
         print(fail)
     return files_by_date
 
 
-################################################################################
-# SINGLE RECIPIENT MESSAGES
-################################################################################
+def organize_files_by_subject(file_list: list) -> dict:
+    files_by_subject = dict()
+    for file_path in file_list:
+        msg = utils.EnronEmail(file_path)
+        files_by_subject.setdefault(msg.subject, []).append(file_path)
+    return files_by_subject
 
-def generate_single_recip(file_list: list) -> dict:
+
+def filter_single_recip(file_list: list) -> dict:
     single_recip_by_date = dict()
     total = len(file_list)
     errors = []
@@ -93,9 +98,9 @@ def generate_single_recip(file_list: list) -> dict:
             print(f"{i} of {total} ({round(i / total * 100)}%)")
 
     utils.store_pickle(single_recip_by_date, "pickle/single_recip_by_date.pickle")
-    print("The following file(s) could not be fully parsed:")
-    for fail in errors:
-        print(fail)
+    if errors:
+        print("The following file(s) could not be fully parsed:")
+        print("\n".join(errors))
     return single_recip_by_date
 
 
@@ -107,14 +112,72 @@ def find_participant(file_list: list, participant: str) -> list:
     """Searches through a list of files and returns a list that include
     the given participant email address as sender or receiver"""
     matches = []
+    errors = []
+    total = len(file_list)
+    for i, file_path in enumerate(file_list):
+        try:
+            msg = utils.EnronEmail(file_path)
+            if (participant in msg.sender) or (participant in msg.recip):
+                matches.append(file_path)
+        except TypeError:
+            errors.append(file_path)
+            continue
+        except email.errors.HeaderParseError:
+            errors.append(file_path)
+            continue
+
+        if i % 1000 == 0:
+            print(f"{i} of {total} ({round(i / total * 100)}%)")
+    if errors:
+        print("The following file(s) could not be fully parsed:")
+        print("\n".join(errors))
+    return matches
+
+
+def find_sender(file_list: list, sender: str) -> list:
+    """
+    Searches through the file list for any messages that
+    contain the sender string in the message's sender field
+    """
+    matches = []
     for file_path in file_list:
-        msg = utils.EnronEmail(file_path, True)
-        if (participant in msg.sender) or (participant in msg.recip):
+        msg = utils.EnronEmail(file_path)
+        if sender in msg.sender:
             matches.append(file_path)
     return matches
+
+
+def find_ssns(file_list: list) -> list:
+    ssns = []
+    errors = []
+    total = len(file_list)
+    ssn_pattern = re.compile(r'\b\d{3}-\d{2}-\d{4}\b')
+    for i, file_path in enumerate(file_list):
+        try:
+            msg = utils.EnronEmail(file_path, True)
+        except TypeError:
+            errors.append(file_path)
+            continue
+        except email.errors.HeaderParseError:
+            errors.append(file_path)
+            continue
+        if i % 1000 == 0:
+            print(f"{i} of {total} ({round(i / total * 100)}%)")
+        ssns.extend(re.findall(ssn_pattern, msg.body))
+    if errors:
+        print("The following file(s) could not be fully parsed:")
+        print("\n".join(errors))
+    if ssns:
+        print("Found SSNs:")
+        print("\n".join(ssns))
+    return ssns
 
 
 ################################################################################
 
 if __name__ == '__main__':
-    pass
+    files_by_date = utils.load_pickle("pickle/files_by_date_smu_betas.pickle")
+    for date in sorted(list(files_by_date.keys())):
+        for file_path in files_by_date[date]:
+            msg = utils.EnronEmail(file_path)
+            msg.print_email()
