@@ -3,6 +3,7 @@ enron_mail_20150507.tar.gz
 maildir/
 misc/
 *.pickle
+enron.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

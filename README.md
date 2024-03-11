@@ -35,10 +35,14 @@ List of weird, interesting, funny, or otherwise notable emails in the corpus
 - [Fw: This Is the Captain Speaking](maildir/giron-d/sent/599.)
 - [Holiday Party - Canceled](maildir/germany-c/deleted_items/311.)
 - [RE: Thanksgiving](maildir/tholt-j/sent_items/273.)
+- [RE: (no subject)](maildir/maggi-m/deleted_items/481.)
+- [FW: (no subject)](maildir/buy-r/sent_items/98.)
 
 ## Broken files
 
 List of files with invalid email addresses in the `To` header, causing an exception during parsing. The invalid email addresses appear to be ones that start with a period, such as `.flood@enron.com`  or `.costa@enron.com` 
+
+I have manually repaired these by adding in the first names identified in the `X-To` field
 
 ```
 maildir/kitchen-l/_americas/esvl/87.

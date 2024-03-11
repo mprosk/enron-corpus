@@ -81,7 +81,7 @@ class EnronEmail:
             if line.startswith("Subject:") or line.startswith("Subj:"):
                 in_body = True
                 continue
-            if any(line.startswith(prefix) for prefix in SMUBETAS):
+            if any(line.startswith(prefix) for prefix in PREFIXES_IGNORE):
                 continue
             if in_body:
                 # Only append an empty line if the previous line had content
