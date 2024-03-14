@@ -1,9 +1,8 @@
 # project specific ignores
 enron_mail_20150507.tar.gz
+enron.db
 maildir/
 misc/
-*.pickle
-enron.db
 html/
 
 # Byte-compiled / optimized / DLL files
