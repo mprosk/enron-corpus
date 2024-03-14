@@ -1,0 +1,7 @@
+business
+personal
+company
+news
+automated
+spam
+html

@@ -60,6 +60,36 @@ def get_email_by_path(email_path: str) -> DatabaseEmail | None:
         return None
 
 
+def get_files_by_body_text(search_text):
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+
+    # Query to retrieve emails containing the search text in the body
+    cursor.execute('''
+        SELECT path FROM emails
+        WHERE LOWER(body) LIKE '%' || LOWER(?) || '%'
+    ''', (search_text,))
+
+    rows = cursor.fetchall()
+    conn.close()
+    return [f[0] for f in rows]
+
+
+def get_files_by_subject(search_text):
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+
+    # Query to retrieve emails containing the search text in the body
+    cursor.execute('''
+        SELECT path FROM emails
+        WHERE LOWER(subject) LIKE '%' || LOWER(?) || '%'
+    ''', (search_text,))
+
+    rows = cursor.fetchall()
+    conn.close()
+    return [f[0] for f in rows]
+
+
 def get_emails_in_date_range(start_date=None, end_date=None):
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()

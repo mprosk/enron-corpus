@@ -63,9 +63,9 @@ def organize_files_by_date(file_list: list, pickle_path: str = "pickle/files_by_
             print(f"{i} of {total} ({round(i / total * 100)}%)")
 
     utils.store_pickle(files_by_date, pickle_path)
-    print("The following file(s) could not be fully parsed:")
-    for fail in errors:
-        print(fail)
+    if errors:
+        print("The following file(s) could not be fully parsed:")
+        print("\n".join(errors))
     return files_by_date
 
 
@@ -176,8 +176,6 @@ def find_ssns(file_list: list) -> list:
 ################################################################################
 
 if __name__ == '__main__':
-    files_by_date = utils.load_pickle("pickle/files_by_date_smu_betas.pickle")
-    for date in sorted(list(files_by_date.keys())):
-        for file_path in files_by_date[date]:
-            msg = utils.EnronEmail(file_path)
-            msg.print_email()
+    file_list = utils.load_pickle("pickle/html_files.pickle")
+    for file_path in file_list:
+        utils.write_body_to_html_file(file_path, "html")

@@ -10,8 +10,9 @@ def main_file(pickle: str, daterange: str, number: int):
     file_list = utils.get_files_in_date_range(files_by_date, start, end)
     print(len(file_list))
     for file_path in random.sample(file_list, number):
-        email = utils.EnronEmail(file_path)
+        email = utils.EnronEmail(file_path, True)
         email.print_email()
+
 
 def main_db(daterange: str, number: int):
     start, end = utils.parse_date_range(daterange)
@@ -35,5 +36,5 @@ if __name__ == '__main__':
     if ":" not in args.daterange:
         print("Invalid date range format. Missing a ':'")
         exit(1)
-    # main_file(args.pickle, args.daterange, args.number)
-    main_db(args.daterange, args.number)
+    main_file(args.pickle, args.daterange, args.number)
+    # main_db(args.daterange, args.number)

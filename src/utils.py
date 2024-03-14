@@ -94,14 +94,26 @@ class EnronEmail:
         return output
 
     def print_email(self):
+        if self.body is None:
+            self.get_body()
         print(f" {self.file_path} ".center(80, "="))
         print("FROM:   ", self.sender)
         print("TO:     ", self.recip)
         print("DATE:   ", self.date)
         print("SUBJECT:", self.subject)
         print()
-        for line in self.get_clean_body():
-            print(line)
+        prev_was_blank = False
+        for line in self.body.splitlines():
+            line = line.strip()
+            while line.startswith(">"):
+                line = line[1:].strip()
+            if line:
+                prev_was_blank = False
+                print(line)
+            else:
+                if not prev_was_blank:
+                    print()
+                prev_was_blank = True
         print()
 
 
@@ -175,3 +187,11 @@ def get_files_in_date_range(files_by_date: dict, start, end) -> list:
         if include:
             file_list.extend(files)
     return file_list
+
+
+def write_body_to_html_file(file_path: str, output_dir: str):
+    msg = EnronEmail(file_path, True)
+    output_path = output_dir + "/" + file_path.replace('/', '.') + ".html"
+    with open(output_path, mode='w') as fp:
+        fp.write(msg.get_body())
+

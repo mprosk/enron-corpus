@@ -37,6 +37,32 @@ List of weird, interesting, funny, or otherwise notable emails in the corpus
 - [RE: Thanksgiving](maildir/tholt-j/sent_items/273.)
 - [RE: (no subject)](maildir/maggi-m/deleted_items/481.)
 - [FW: (no subject)](maildir/buy-r/sent_items/98.)
+- [FW: My life](maildir/tycholiz-b/deleted_items/125.)
+- [Cuntry-Girls](maildir/campbell-l/all_documents/634.)
+- [Mike's Quotation](maildir/mann-k/inbox/242.)
+- [RE: Reply Requested: Do You Code Or Approve Invoices?](maildir/hain-m/notes_inbox/261.)
+- [FW: ready for the next hunt](maildir/donohoe-t/sent_items/14.)
+- [RE: Jesse](maildir/lenhart-m/sent_items/819.) 
+- [FW: Things you'll never hear women say.](maildir/whitt-m/inbox/447.)
+- [SEC Information/Earnings Restatement](maildir/rogers-b/trading_info/76.)
+- [FW: DAVE BARRY](maildir/kaminski-v/discussion_threads/367.)
+- [World's Thinnest Books](maildir/nemec-g/sent/13.)
+- [!!!!!!!!!!!GONE.SCR VIRUS Warning!!!!!!!!!!!11](maildir/salisbury-h/inbox/194.)
+- [FW: Tavel advisory:  France - I thought you and Jim might like this](maildir/kean-s/sent_items/105.)
+
+
+
+- leads to chase:
+  - Re: FW: Suggestions to help short term morale
+  - maildir/rodrique-r/_sent_mail/367.
+    - FROM:    robin.rodrigue@enron.com
+      TO:      gabriel.monroy@enron.com
+  - maildir/richey-c/sent_items/40.
+  - maildir/lenhart-m/sent_items/504.
+    - FROM:   matthew.lenhart@enron.com 
+      TO:    erichardson@sarofim.com
+  - FROM:   matthew.lenhart@enron.com 
+    TO:    chad.landry@enron.com
 
 ## Broken files
 
