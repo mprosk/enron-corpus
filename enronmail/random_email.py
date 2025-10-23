@@ -1,7 +1,7 @@
 import argparse
 import random
-import utils
-import database as db
+from . import utils
+from . import database as db
 
 
 def main_file(pickle: str, daterange: str, number: int):

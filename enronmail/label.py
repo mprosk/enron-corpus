@@ -1,7 +1,7 @@
 import email.errors
 import os
 import random
-import utils
+from . import utils
 
 FILE_LIST = "pickle/file_list.pickle"
 LABELLED_DATA = "pickle/labelled_data.pickle"
@@ -82,4 +82,4 @@ def main():
 
 
 if __name__ == "__main__":
-    convert_to_labels_to_files()
+    main()
