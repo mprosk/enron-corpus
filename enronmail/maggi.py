@@ -4,7 +4,15 @@ import utils
 import analysis
 
 
-PREFIXES = ["-----", "From:", "Sent:", "To:", "Cc:", "Subject:", "Sent from my BlackBerry"]
+PREFIXES = [
+    "-----",
+    "From:",
+    "Sent:",
+    "To:",
+    "Cc:",
+    "Subject:",
+    "Sent from my BlackBerry",
+]
 
 
 class Message:
@@ -15,9 +23,11 @@ class Message:
         self.body = body
 
     def __eq__(self, other):
-        return ((self.date.date() == other.date.date()) and
-                (self.sender == other.sender) and
-                (self.body == other.body))
+        return (
+            (self.date.date() == other.date.date())
+            and (self.sender == other.sender)
+            and (self.body == other.body)
+        )
 
     def __hash__(self):
         return hash((self.date.date(), self.sender, self.body))
@@ -99,7 +109,7 @@ def all_message_contents(file_list: list):
         print(msg.body)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     file_list = utils.load_pickle("pickle/file_list_maggi_michelle.pickle")
     messages = parse_files_as_messages(file_list)
     print(len(messages))

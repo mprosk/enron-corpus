@@ -23,15 +23,27 @@ def main_db(daterange: str, number: int):
         full_msg.print()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Randomly selects any number of emails from the Enron corpus and prints it to the screen")
+        description="Randomly selects any number of emails from the Enron corpus and prints it to the screen"
+    )
     parser.add_argument(
-        'number', type=int, default=1, nargs='?', help="Number of random emails to select")
+        "number",
+        type=int,
+        default=1,
+        nargs="?",
+        help="Number of random emails to select",
+    )
     # parser.add_argument('-m', '--maildir', help="Path to the directory containing the corpus")
     parser.add_argument(
-        '-p', '--pickle', default="pickle/files_by_date.pickle", help="path to the pickle file to load")
-    parser.add_argument('-d', '--daterange', default=":", help="range of dates to select from")
+        "-p",
+        "--pickle",
+        default="pickle/files_by_date.pickle",
+        help="path to the pickle file to load",
+    )
+    parser.add_argument(
+        "-d", "--daterange", default=":", help="range of dates to select from"
+    )
     args = parser.parse_args()
     if ":" not in args.daterange:
         print("Invalid date range format. Missing a ':'")

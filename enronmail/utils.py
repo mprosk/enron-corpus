@@ -30,40 +30,41 @@ SMUBETAS = [
     "ADVERTISEMENT",
     "[IMAGE]",
     "Join 18 million Eudora users by signing up for a free Eudora Web-Mail",
-    "account at http://www.eudoramail.com"
+    "account at http://www.eudoramail.com",
 ]
 
 ################################################################################
 # EMAIL METADATA CLASS
 ################################################################################
 
+
 class EnronEmail:
     """Class for containing metadata"""
 
     def __init__(self, file_path: Path, load_body: bool = False):
         self.file_path = file_path
-        with open(self.file_path, mode='rb') as file:
+        with open(self.file_path, mode="rb") as file:
             self.msg = BytesParser(policy=policy.default).parse(file)
-        self.subject = self.msg.get('Subject', '[ERR]')
+        self.subject = self.msg.get("Subject", "[ERR]")
         if not self.subject:
             self.subject = "(no subject)"
-        self.sender = self.msg.get('From', '[ERR]')
-        self.recip = self.msg.get('To', '[ERR]')
-        self.date = datetime.strptime(self.msg.get('Date'), DATE_FORMAT_STRING)
+        self.sender = self.msg.get("From", "[ERR]")
+        self.recip = self.msg.get("To", "[ERR]")
+        self.date = datetime.strptime(self.msg.get("Date"), DATE_FORMAT_STRING)
         self.body = None
         if load_body:
-            self.body = self.msg.get_payload(decode=True).decode('utf-8')
+            self.body = self.msg.get_payload(decode=True).decode("utf-8")
 
     def get_body(self) -> str:
         if self.body:
             return self.body
-        with open(self.file_path, mode='rb') as file:
+        with open(self.file_path, mode="rb") as file:
             self.msg = BytesParser(policy=policy.default).parse(file)
-        self.body = self.msg.get_payload(decode=True).decode('utf-8')
+        self.body = self.msg.get_payload(decode=True).decode("utf-8")
         return self.body
 
     def get_number_of_recipients(self):
-        return self.recip.count('@')
+        return self.recip.count("@")
 
     def get_clean_body(self) -> list:
         """Parses the body text of a decoded email and attempts to isolate just the interesting text"""
@@ -121,23 +122,25 @@ class EnronEmail:
 # EMAIL PARSING UTILITIES
 ################################################################################
 
+
 def get_email_date(file_path: str) -> datetime:
-    with open(file_path, mode='rb') as file:
+    with open(file_path, mode="rb") as file:
         msg = BytesParser(policy=policy.default).parse(file)
-    return datetime.strptime(msg.get('Date'), DATE_FORMAT_STRING)
+    return datetime.strptime(msg.get("Date"), DATE_FORMAT_STRING)
 
 
 ################################################################################
 # PICKLE I/O UTILITIES
 ################################################################################
 
+
 def load_pickle(pickle_path):
-    with open(pickle_path, mode='rb') as file:
+    with open(pickle_path, mode="rb") as file:
         return pickle.load(file)
 
 
 def store_pickle(item, pickle_path):
-    with open(pickle_path, mode='wb') as file:
+    with open(pickle_path, mode="wb") as file:
         pickle.dump(item, file)
 
 
@@ -145,12 +148,14 @@ def store_pickle(item, pickle_path):
 # DATE RANGE UTILITIES
 ################################################################################
 
+
 def parse_date_range(daterange: str):
     """
     Parses a date range string into datetime.date ranges
     :param daterange: date range string
     :return: tuple of ( [ datetime.date | None ], [ datetime.date | None ] )
     """
+
     def parse_date_string(date: str):
         if not date:
             return None
@@ -160,6 +165,7 @@ def parse_date_range(daterange: str):
             except ValueError:
                 continue
         return None
+
     tokens = daterange.split(":")
     start = parse_date_string(tokens[0])
     end = parse_date_string(tokens[1])
@@ -191,7 +197,6 @@ def get_files_in_date_range(files_by_date: dict, start, end) -> list:
 
 def write_body_to_html_file(file_path: str, output_dir: str):
     msg = EnronEmail(file_path, True)
-    output_path = output_dir + "/" + file_path.replace('/', '.') + ".html"
-    with open(output_path, mode='w') as fp:
+    output_path = output_dir + "/" + file_path.replace("/", ".") + ".html"
+    with open(output_path, mode="w") as fp:
         fp.write(msg.get_body())
-

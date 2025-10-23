@@ -9,7 +9,15 @@ DATABASE = "enron.db"
 
 
 class DatabaseEmail:
-    def __init__(self, path: str, date: datetime, sender: str = "", recipient: str = "", subject: str = "", body: str = ""):
+    def __init__(
+        self,
+        path: str,
+        date: datetime,
+        sender: str = "",
+        recipient: str = "",
+        subject: str = "",
+        body: str = "",
+    ):
         self.path = path
         self.date = date
         self.sender = sender
@@ -44,10 +52,13 @@ def get_email_by_path(email_path: str) -> DatabaseEmail | None:
     cursor = conn.cursor()
 
     # Query to retrieve the email body based on the email path
-    cursor.execute('''
+    cursor.execute(
+        """
         SELECT * FROM emails
         WHERE path = ?
-    ''', (email_path,))
+    """,
+        (email_path,),
+    )
 
     # Fetch the result
     result = cursor.fetchone()
@@ -55,7 +66,9 @@ def get_email_by_path(email_path: str) -> DatabaseEmail | None:
 
     # Check if the result is not empty
     if result:
-        return DatabaseEmail(*result)  # Assuming there's only one result, return the body
+        return DatabaseEmail(
+            *result
+        )  # Assuming there's only one result, return the body
     else:
         return None
 
@@ -65,10 +78,13 @@ def get_files_by_body_text(search_text):
     cursor = conn.cursor()
 
     # Query to retrieve emails containing the search text in the body
-    cursor.execute('''
+    cursor.execute(
+        """
         SELECT path FROM emails
         WHERE LOWER(body) LIKE '%' || LOWER(?) || '%'
-    ''', (search_text,))
+    """,
+        (search_text,),
+    )
 
     rows = cursor.fetchall()
     conn.close()
@@ -80,10 +96,13 @@ def get_files_by_subject(search_text):
     cursor = conn.cursor()
 
     # Query to retrieve emails containing the search text in the body
-    cursor.execute('''
+    cursor.execute(
+        """
         SELECT path FROM emails
         WHERE LOWER(subject) LIKE '%' || LOWER(?) || '%'
-    ''', (search_text,))
+    """,
+        (search_text,),
+    )
 
     rows = cursor.fetchall()
     conn.close()
@@ -100,28 +119,34 @@ def get_emails_in_date_range(start_date=None, end_date=None):
 
     # Build the SQL query based on the provided date range
     if start_date is None and end_date is None:
-        query = '''
+        query = """
             SELECT path, date FROM emails
-        '''
+        """
         cursor.execute(query)
     elif start_date is not None and end_date is not None:
-        query = '''
+        query = """
             SELECT path, date FROM emails
             WHERE date BETWEEN ? AND ?
-        '''
-        cursor.execute(query, (start_date.strftime('%Y-%m-%d %H:%M:%S'), end_date.strftime('%Y-%m-%d %H:%M:%S')))
+        """
+        cursor.execute(
+            query,
+            (
+                start_date.strftime("%Y-%m-%d %H:%M:%S"),
+                end_date.strftime("%Y-%m-%d %H:%M:%S"),
+            ),
+        )
     elif start_date is not None:
-        query = '''
+        query = """
             SELECT path, date FROM emails
             WHERE date >= ?
-        '''
-        cursor.execute(query, (start_date.strftime('%Y-%m-%d %H:%M:%S'),))
+        """
+        cursor.execute(query, (start_date.strftime("%Y-%m-%d %H:%M:%S"),))
     elif end_date is not None:
-        query = '''
+        query = """
             SELECT path, date FROM emails
             WHERE date <= ?
-        '''
-        cursor.execute(query, (end_date.strftime('%Y-%m-%d %H:%M:%S'),))
+        """
+        cursor.execute(query, (end_date.strftime("%Y-%m-%d %H:%M:%S"),))
 
     # Fetch all rows and create Email instances
     rows = cursor.fetchall()
@@ -134,7 +159,8 @@ def get_emails_in_date_range(start_date=None, end_date=None):
 def init_table():
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
-    cursor.execute("""
+    cursor.execute(
+        """
         CREATE TABLE IF NOT EXISTS emails (
             path TEXT PRIMARY KEY,
             date DATETIME,
@@ -143,17 +169,26 @@ def init_table():
             subject TEXT,
             body TEXT
         )
-    """)
+    """
+    )
     conn.commit()
     conn.close()
 
 
 def insert_entry(cursor, entry: EnronEmail):
-    cursor.execute('''
+    cursor.execute(
+        """
         INSERT INTO emails (path, date, sender, recipient, subject, body) VALUES (?, ?, ?, ?, ?, ?)
-    ''', (entry.file_path,
-          entry.date.strftime('%Y-%m-%d %H:%M:%S'),
-          entry.sender, entry.recip, entry.subject, entry.get_body()))
+    """,
+        (
+            entry.file_path,
+            entry.date.strftime("%Y-%m-%d %H:%M:%S"),
+            entry.sender,
+            entry.recip,
+            entry.subject,
+            entry.get_body(),
+        ),
+    )
 
 
 def populate_database(file_list: list):
@@ -182,7 +217,7 @@ def populate_database(file_list: list):
         print("\n".join(errors))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     init_table()
     file_list = utils.load_pickle("pickle/file_list.pickle")
     populate_database(file_list)

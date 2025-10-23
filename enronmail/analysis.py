@@ -8,11 +8,13 @@ from . import utils
 # FILE LIST GENERATION
 ################################################################################
 
+
 def generate_file_list(maildir: Path, pickle_path: str = "pickle/file_list.pickle"):
     """
     Recursively iterates through all files in the given Path
     and returns a list of all paths that are a file
     """
+
     def walk_file_tree(maildir: Path) -> list:
         if not maildir.is_dir():
             return []
@@ -39,7 +41,10 @@ def generate_file_list(maildir: Path, pickle_path: str = "pickle/file_list.pickl
 # FILES BY DATE
 ################################################################################
 
-def organize_files_by_date(file_list: list, pickle_path: str = "pickle/files_by_date.pickle") -> dict:
+
+def organize_files_by_date(
+    file_list: list, pickle_path: str = "pickle/files_by_date.pickle"
+) -> dict:
     """
     Iterates through all files in the given file_list
     and creates a dictionary mapping a datetime.date
@@ -108,6 +113,7 @@ def filter_single_recip(file_list: list) -> dict:
 # SEARCH UTILITIES
 ################################################################################
 
+
 def find_participant(file_list: list, participant: str) -> list:
     """Searches through a list of files and returns a list that include
     the given participant email address as sender or receiver"""
@@ -151,7 +157,7 @@ def find_ssns(file_list: list) -> list:
     ssns = []
     errors = []
     total = len(file_list)
-    ssn_pattern = re.compile(r'\b\d{3}-\d{2}-\d{4}\b')
+    ssn_pattern = re.compile(r"\b\d{3}-\d{2}-\d{4}\b")
     for i, file_path in enumerate(file_list):
         try:
             msg = utils.EnronEmail(file_path, True)
@@ -175,7 +181,7 @@ def find_ssns(file_list: list) -> list:
 
 ################################################################################
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     file_list = utils.load_pickle("pickle/html_files.pickle")
     for file_path in file_list:
         utils.write_body_to_html_file(file_path, "html")

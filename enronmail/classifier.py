@@ -16,11 +16,13 @@ emails = [
 # Split data into features (X) and labels (y)
 labels, messages = zip(*emails)
 
+
 # Preprocess text data
 def preprocess_text(text):
     text = text.lower()  # Convert to lowercase
-    text = re.sub(r'\W', ' ', text)  # Remove non-alphanumeric characters
+    text = re.sub(r"\W", " ", text)  # Remove non-alphanumeric characters
     return text
+
 
 messages = [preprocess_text(message) for message in messages]
 
@@ -29,7 +31,9 @@ vectorizer = CountVectorizer()
 X = vectorizer.fit_transform(messages)
 
 # Split data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, labels, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, labels, test_size=0.2, random_state=42
+)
 
 # Train the Naive Bayes classifier
 classifier = MultinomialNB()

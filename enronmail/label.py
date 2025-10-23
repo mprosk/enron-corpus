@@ -81,6 +81,5 @@ def main():
         print("Data saved. Exiting...")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     convert_to_labels_to_files()
-
