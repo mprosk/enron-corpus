@@ -174,6 +174,9 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
                             <td style="border: none; padding: 5px;"><input type="date" id="end_date" name="end_date"></td>
                         </tr>
                     </table>
+                    <div style="margin-top: 10px; margin-left: 100px;">
+                        <input type="submit" value="Advanced Search">
+                    </div>
                 </div>
             </form>
         </div>
@@ -538,7 +541,23 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
         a:hover {{
             color: #ff0000;
         }}
+        .copy-link {{
+            margin-left: 10px;
+            font-size: 12px;
+            cursor: pointer;
+        }}
     </style>
+    <script>
+        function copyMdLink() {{
+            const subject = {repr(email_subject if email_subject else "(no subject)")};
+            const path = {repr(db_path)};
+            const mdLink = `[${{subject}}](${{path}})`;
+            
+            navigator.clipboard.writeText(mdLink).catch(err => {{
+                alert('Failed to copy: ' + err);
+            }});
+        }}
+    </script>
 </head>
 <body>
     <div class="container">
@@ -568,7 +587,7 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
                 </tr>
                 <tr>
                     <td class="label">Path:</td>
-                    <td><small>{path_str}</small></td>
+                    <td><small>{path_str}</small> <a href="#" onclick="copyMdLink(); return false;" class="copy-link">copy md link</a></td>
                 </tr>
             </table>
         </div>

@@ -57,9 +57,9 @@ List of weird, interesting, funny, or otherwise notable emails in the corpus
 - [FW: Humor](maildir/germany-c/inbox/29.)
 - [(no subject)](maildir/lenhart-m/deleted_items/414.)
 - [FW: Spontaneous Combustion](maildir/williams-w3/symesees/71.)
+- [Suggestions to help short term morale](maildir/beck-s/inbox/483.)
 
 - leads to chase:
-  - Re: FW: Suggestions to help short term morale
   - maildir/rodrique-r/_sent_mail/367.
     - FROM:    robin.rodrigue@enron.com
       TO:      gabriel.monroy@enron.com
