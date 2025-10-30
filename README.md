@@ -54,8 +54,9 @@ List of weird, interesting, funny, or otherwise notable emails in the corpus
 - [h:\ drive](maildir/storey-g/deleted_items/162.)
 - [Re: halloween](maildir/lucci-p/deleted_items/78.)
 - [Halloween](maildir/mcconnell-m/inbox/15.)
-
-
+- [FW: Humor](maildir/germany-c/inbox/29.)
+- [(no subject)](maildir/lenhart-m/deleted_items/414.)
+- [FW: Spontaneous Combustion](maildir/williams-w3/symesees/71.)
 
 - leads to chase:
   - Re: FW: Suggestions to help short term morale
