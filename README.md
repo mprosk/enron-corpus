@@ -49,6 +49,11 @@ List of weird, interesting, funny, or otherwise notable emails in the corpus
 - [World's Thinnest Books](maildir/nemec-g/sent/13.)
 - [!!!!!!!!!!!GONE.SCR VIRUS Warning!!!!!!!!!!!11](maildir/salisbury-h/inbox/194.)
 - [FW: Tavel advisory:  France - I thought you and Jim might like this](maildir/kean-s/sent_items/105.)
+- [Yesterdays sermon](maildir/donohoe-t/sent_items/9.)
+- [Re: houston, we have a problem....?](maildir/scott-s/sent/669.)
+- [h:\ drive](maildir/storey-g/deleted_items/162.)
+- [Re: halloween](maildir/lucci-p/deleted_items/78.)
+- [Halloween](maildir/mcconnell-m/inbox/15.)
 
 
 

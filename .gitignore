@@ -1,6 +1,7 @@
 # project specific ignores
 enron_mail_20150507.tar.gz
 enron.db
+enron.pq
 maildir/
 misc/
 html/
