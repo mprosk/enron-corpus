@@ -34,7 +34,14 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
             start_date = query_params.get("start_date", [""])[0]
             end_date = query_params.get("end_date", [""])[0]
             self.serve_search_results(
-                search_query, sender, recipient, participant, subject, body, start_date, end_date
+                search_query,
+                sender,
+                recipient,
+                participant,
+                subject,
+                body,
+                start_date,
+                end_date,
             )
         elif path == "/email":
             email_path = query_params.get("path", [""])[0]
@@ -245,7 +252,14 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
 
         # Search the database
         results, total_count = self.search_emails(
-            search_query, sender, recipient, participant, subject, body, start_date, end_date
+            search_query,
+            sender,
+            recipient,
+            participant,
+            subject,
+            body,
+            start_date,
+            end_date,
         )
 
         # Build search criteria display text
@@ -471,15 +485,32 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
                 and "<tr" in body_lower
             )
 
+        # Create formatted version of the body (strip lines and remove leading ">")
+        def format_body(text: str) -> str:
+            """Format email body by stripping lines and removing leading '>' characters"""
+            lines = text.split("\n")
+            formatted_lines = []
+            for line in lines:
+                line = line.strip()
+                # Remove leading ">" characters
+                while line.startswith(">"):
+                    line = line[1:].strip()
+                formatted_lines.append(line)
+            return "\n".join(formatted_lines)
+
         # Render body based on content type
         if is_html:
             # Escape HTML for iframe srcdoc attribute
             escaped_body = html.escape(body_content, quote=True)
             body_html = f'<div class="email-body-html"><iframe srcdoc="{escaped_body}"></iframe></div>'
+            # HTML emails don't get formatted view
+            formatted_body_html = ""
         else:
-            # Plain text - escape and display
-            body_str = html.escape(body_content)
-            body_html = f'<div class="email-body">{body_str}</div>'
+            # Plain text - create both original and formatted versions
+            body_str_original = html.escape(body_content)
+            body_str_formatted = html.escape(format_body(body_content))
+            body_html = f'<div id="body-original" class="email-body" style="display: none;">{body_str_original}</div>'
+            formatted_body_html = f'<div id="body-formatted" class="email-body">{body_str_formatted}</div>'
 
         html_content = f"""<!DOCTYPE html>
 <html>
@@ -558,6 +589,19 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
         }}
     </style>
     <script>
+        function switchView(viewMode) {{
+            const original = document.getElementById('body-original');
+            const formatted = document.getElementById('body-formatted');
+            
+            if (viewMode === 'original') {{
+                original.style.display = 'block';
+                formatted.style.display = 'none';
+            }} else {{
+                original.style.display = 'none';
+                formatted.style.display = 'block';
+            }}
+        }}
+        
         function copyMdLink() {{
             const subject = {repr(email_subject if email_subject else "(no subject)")};
             const path = {repr(db_path)};
@@ -599,10 +643,18 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
                     <td class="label">Path:</td>
                     <td><small>{path_str}</small> <a href="#" onclick="copyMdLink(); return false;" class="copy-link">copy md link</a></td>
                 </tr>
+                {"" if is_html else '''<tr>
+                    <td class="label">View:</td>
+                    <td>
+                        <label><input type="radio" name="view" value="original" onclick="switchView('original')"> Original</label>
+                        <label style="margin-left: 15px;"><input type="radio" name="view" value="formatted" onclick="switchView('formatted')" checked> Formatted</label>
+                    </td>
+                </tr>'''}
             </table>
         </div>
         
         {body_html}
+        {formatted_body_html}
         
         <div class="back-link">
             {"<a href='#' onclick='history.back(); return false;'>&lt;&lt; Back to Results</a>" if from_search else "<a href='/'>&lt;&lt; Back to Search</a>"}
@@ -661,7 +713,9 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
             params.append(f"%{recipient}%")
 
         if participant.strip():
-            where_clauses.append("(sender LIKE ? COLLATE NOCASE OR recipient LIKE ? COLLATE NOCASE)")
+            where_clauses.append(
+                "(sender LIKE ? COLLATE NOCASE OR recipient LIKE ? COLLATE NOCASE)"
+            )
             participant_pattern = f"%{participant}%"
             params.extend([participant_pattern, participant_pattern])
 
