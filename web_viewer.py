@@ -31,6 +31,7 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
             participant = query_params.get("participant", [""])[0]
             subject = query_params.get("subject", [""])[0]
             body = query_params.get("body", [""])[0]
+            path_search = query_params.get("path", [""])[0]
             start_date = query_params.get("start_date", [""])[0]
             end_date = query_params.get("end_date", [""])[0]
             self.serve_search_results(
@@ -40,6 +41,7 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
                 participant,
                 subject,
                 body,
+                path_search,
                 start_date,
                 end_date,
             )
@@ -178,12 +180,16 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
                             <td style="border: none; padding: 5px;"><input type="text" id="body" name="body" placeholder="Body text" style="width: 95%;"></td>
                         </tr>
                         <tr>
+                            <td style="border: none; padding: 5px;"><label for="path">Path:</label></td>
+                            <td style="border: none; padding: 5px;"><input type="text" id="path" name="path" placeholder="Email file path (e.g., lay-k/sent)" style="width: 95%;"></td>
+                        </tr>
+                        <tr>
                             <td style="border: none; padding: 5px;"><label for="start_date">Date From:</label></td>
-                            <td style="border: none; padding: 5px;"><input type="date" id="start_date" name="start_date"></td>
+                            <td style="border: none; padding: 5px;"><input type="date" id="start_date" name="start_date" style="width: 95%;"></td>
                         </tr>
                         <tr>
                             <td style="border: none; padding: 5px;"><label for="end_date">Date To:</label></td>
-                            <td style="border: none; padding: 5px;"><input type="date" id="end_date" name="end_date"></td>
+                            <td style="border: none; padding: 5px;"><input type="date" id="end_date" name="end_date" style="width: 95%;"></td>
                         </tr>
                     </table>
                     <div style="margin-top: 10px; margin-left: 100px;">
@@ -205,6 +211,7 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
                 <li><b>Quick Search:</b> Enter text to search across all fields (subject, sender, recipient, and body)</li>
                 <li><b>Advanced Search:</b> Use the fields below to search specific parts of emails</li>
                 <li><b>Participant:</b> Find emails where someone was involved (either as sender OR recipient)</li>
+                <li><b>Path:</b> Filter by email file path (e.g., "lay-k/sent" or "inbox")</li>
                 <li>You can combine multiple advanced search fields together</li>
                 <li>Date range search works alone or with other criteria (emails are mainly from 1999-2003)</li>
                 <li>All searches are case-insensitive</li>
@@ -230,6 +237,7 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
         participant: str = "",
         subject: str = "",
         body: str = "",
+        path_search: str = "",
         start_date: str = "",
         end_date: str = "",
     ) -> None:
@@ -243,6 +251,7 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
                 participant.strip(),
                 subject.strip(),
                 body.strip(),
+                path_search.strip(),
                 start_date,
                 end_date,
             ]
@@ -258,6 +267,7 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
             participant,
             subject,
             body,
+            path_search,
             start_date,
             end_date,
         )
@@ -276,6 +286,8 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
             criteria_parts.append(f'Subject: "{html.escape(subject)}"')
         if body.strip():
             criteria_parts.append(f'Body: "{html.escape(body)}"')
+        if path_search.strip():
+            criteria_parts.append(f'Path: "{html.escape(path_search)}"')
         if start_date and end_date:
             criteria_parts.append(f"Date: {start_date} to {end_date}")
         elif start_date:
@@ -682,6 +694,7 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
         participant: str = "",
         subject: str = "",
         body: str = "",
+        path_search: str = "",
         start_date: str = "",
         end_date: str = "",
     ) -> Tuple[List[Tuple], int]:
@@ -726,6 +739,10 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
         if body.strip():
             where_clauses.append("body LIKE ? COLLATE NOCASE")
             params.append(f"%{body}%")
+
+        if path_search.strip():
+            where_clauses.append("path LIKE ? COLLATE NOCASE")
+            params.append(f"%{path_search}%")
 
         # Add date filtering
         if start_date:
