@@ -28,12 +28,13 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
             search_query = query_params.get("q", [""])[0]
             sender = query_params.get("sender", [""])[0]
             recipient = query_params.get("recipient", [""])[0]
+            participant = query_params.get("participant", [""])[0]
             subject = query_params.get("subject", [""])[0]
             body = query_params.get("body", [""])[0]
             start_date = query_params.get("start_date", [""])[0]
             end_date = query_params.get("end_date", [""])[0]
             self.serve_search_results(
-                search_query, sender, recipient, subject, body, start_date, end_date
+                search_query, sender, recipient, participant, subject, body, start_date, end_date
             )
         elif path == "/email":
             email_path = query_params.get("path", [""])[0]
@@ -158,6 +159,10 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
                             <td style="border: none; padding: 5px;"><input type="text" id="recipient" name="recipient" placeholder="Recipient email or name" style="width: 95%;"></td>
                         </tr>
                         <tr>
+                            <td style="border: none; padding: 5px;"><label for="participant">Participant:</label></td>
+                            <td style="border: none; padding: 5px;"><input type="text" id="participant" name="participant" placeholder="Sender OR recipient (either)" style="width: 95%;"></td>
+                        </tr>
+                        <tr>
                             <td style="border: none; padding: 5px;"><label for="subject">Subject:</label></td>
                             <td style="border: none; padding: 5px;"><input type="text" id="subject" name="subject" placeholder="Subject text" style="width: 95%;"></td>
                         </tr>
@@ -191,7 +196,8 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
             <b>Instructions:</b>
             <ul>
                 <li><b>Quick Search:</b> Enter text to search across all fields (subject, sender, recipient, and body)</li>
-                <li><b>Advanced Search:</b> Use the fields below to search specific parts of emails (e.g., "sherri" in From field, "party" in Body)</li>
+                <li><b>Advanced Search:</b> Use the fields below to search specific parts of emails</li>
+                <li><b>Participant:</b> Find emails where someone was involved (either as sender OR recipient)</li>
                 <li>You can combine multiple advanced search fields together</li>
                 <li>Date range search works alone or with other criteria (emails are mainly from 1999-2003)</li>
                 <li>All searches are case-insensitive</li>
@@ -214,6 +220,7 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
         search_query: str = "",
         sender: str = "",
         recipient: str = "",
+        participant: str = "",
         subject: str = "",
         body: str = "",
         start_date: str = "",
@@ -226,6 +233,7 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
                 search_query.strip(),
                 sender.strip(),
                 recipient.strip(),
+                participant.strip(),
                 subject.strip(),
                 body.strip(),
                 start_date,
@@ -237,7 +245,7 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
 
         # Search the database
         results, total_count = self.search_emails(
-            search_query, sender, recipient, subject, body, start_date, end_date
+            search_query, sender, recipient, participant, subject, body, start_date, end_date
         )
 
         # Build search criteria display text
@@ -248,6 +256,8 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
             criteria_parts.append(f'From: "{html.escape(sender)}"')
         if recipient.strip():
             criteria_parts.append(f'To: "{html.escape(recipient)}"')
+        if participant.strip():
+            criteria_parts.append(f'Participant: "{html.escape(participant)}"')
         if subject.strip():
             criteria_parts.append(f'Subject: "{html.escape(subject)}"')
         if body.strip():
@@ -617,6 +627,7 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
         query: str = "",
         sender: str = "",
         recipient: str = "",
+        participant: str = "",
         subject: str = "",
         body: str = "",
         start_date: str = "",
@@ -648,6 +659,11 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
         if recipient.strip():
             where_clauses.append("recipient LIKE ? COLLATE NOCASE")
             params.append(f"%{recipient}%")
+
+        if participant.strip():
+            where_clauses.append("(sender LIKE ? COLLATE NOCASE OR recipient LIKE ? COLLATE NOCASE)")
+            participant_pattern = f"%{participant}%"
+            params.extend([participant_pattern, participant_pattern])
 
         if subject.strip():
             where_clauses.append("subject LIKE ? COLLATE NOCASE")
