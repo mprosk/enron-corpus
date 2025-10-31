@@ -348,12 +348,34 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
         td {{
             border: 1px solid #999;
             padding: 8px;
+            position: relative;
         }}
-        tr:nth-child(even) {{
+        tbody tr:nth-child(even) {{
             background-color: #f9f9f9;
         }}
-        tr:hover {{
+        tbody tr:hover {{
             background-color: #e0e0ff;
+        }}
+        tbody tr .email-preview {{
+            display: none;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 100%;
+            z-index: 1000;
+            background-color: #ffffee;
+            border: 2px solid #666;
+            padding: 10px;
+            min-width: 600px;
+            max-width: 800px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 11px;
+            box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+            margin-top: 2px;
+        }}
+        tbody tr:hover .email-preview {{
+            display: block;
         }}
         a {{
             color: #0000ff;
@@ -390,11 +412,14 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
         if results:
             html_content += """
         <table>
+            <thead>
             <tr>
                 <th width="100">Date</th>
                 <th width="250">Subject</th>
                 <th>Preview</th>
             </tr>
+            </thead>
+            <tbody>
 """
 
             for row in results:
@@ -410,13 +435,19 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
 
                 subject_str = html.escape(subject if subject else "(no subject)")
 
-                # Create body preview (first 200 chars)
-                body_preview = body[:200] if body else ""
+                # Create body preview (first 200 chars for table)
+                body_preview = body[:300] if body else ""
                 body_preview = html.escape(
                     body_preview.replace("\n", " ").replace("\r", "")
                 )
-                if body and len(body) > 200:
+                if body and len(body) > 300:
                     body_preview += "..."
+
+                # Create longer preview for hover popup (first 500 chars)
+                body_hover = body[:1000].strip() if body else "(no content)"
+                body_hover_escaped = html.escape(body_hover)
+                if body and len(body) > 1000:
+                    body_hover_escaped += "\n..."
 
                 # URL encode the path and add flag to indicate we came from search
                 encoded_path = urllib.parse.quote(path)
@@ -426,11 +457,15 @@ class EmailViewerHandler(BaseHTTPRequestHandler):
             <tr>
                 <td>{date_str}</td>
                 <td><a href="{email_url}">{subject_str}</a></td>
-                <td>{body_preview}</td>
+                <td>
+                    {body_preview}
+                    <div class="email-preview">{body_hover_escaped}</div>
+                </td>
             </tr>
 """
 
             html_content += """
+            </tbody>
         </table>
         
         <div class="back-link">
