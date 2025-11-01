@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+
+{% block title %}{{ subject if subject else "(no subject)" }}{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-3xl md:text-4xl font-bold text-enron-blue border-b-4 border-enron-blue pb-3 mb-4">
+            Email Details
+        </h1>
+        
+        <div class="mb-4">
+            {% if from_search %}
+            <a href="#" onclick="history.back(); return false;" class="text-enron-blue hover:text-blue-900 font-medium flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Results
+            </a>
+            {% else %}
+            <a href="/" class="text-enron-blue hover:text-blue-900 font-medium flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Search
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Email Header -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <span class="text-sm font-semibold text-gray-600 block mb-1">Date</span>
+                    <span class="text-gray-800">{{ date if date else "N/A" }}</span>
+                </div>
+                <div>
+                    <span class="text-sm font-semibold text-gray-600 block mb-1">From</span>
+                    <span class="text-gray-800 break-words">{{ sender if sender else "N/A" }}</span>
+                </div>
+                <div>
+                    <span class="text-sm font-semibold text-gray-600 block mb-1">To</span>
+                    <span class="text-gray-800 break-words">{{ recipient if recipient else "N/A" }}</span>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-200 pt-4">
+                <span class="text-sm font-semibold text-gray-600 block mb-1">Subject</span>
+                <span class="text-gray-800 text-lg">{{ subject if subject else "(no subject)" }}</span>
+            </div>
+            
+            <div class="border-t border-gray-200 pt-4">
+                <span class="text-sm font-semibold text-gray-600 block mb-1">Path</span>
+                <div class="flex flex-wrap items-center gap-2">
+                    <code class="text-xs bg-gray-100 px-2 py-1 rounded text-gray-700 break-all">{{ path }}</code>
+                    <button 
+                        onclick="copyMdLink()" 
+                        class="text-xs px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-enron-blue transition-colors"
+                        id="copy-btn"
+                    >
+                        Copy MD Link
+                    </button>
+                    <span id="copy-feedback" class="text-xs text-green-600 hidden">Copied!</span>
+                </div>
+            </div>
+            
+            {% if is_html %}
+            <div class="border-t border-gray-200 pt-4">
+                <span class="text-sm font-semibold text-gray-600 block mb-2">View</span>
+                <div class="flex gap-4">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input 
+                            type="radio" 
+                            name="view" 
+                            value="rendered" 
+                            onclick="switchHtmlView('rendered')"
+                            checked
+                            class="text-enron-blue focus:ring-enron-blue"
+                        >
+                        <span class="text-sm text-gray-700">Rendered</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input 
+                            type="radio" 
+                            name="view" 
+                            value="raw" 
+                            onclick="switchHtmlView('raw')"
+                            class="text-enron-blue focus:ring-enron-blue"
+                        >
+                        <span class="text-sm text-gray-700">Raw HTML</span>
+                    </label>
+                </div>
+            </div>
+            {% else %}
+            <div class="border-t border-gray-200 pt-4">
+                <span class="text-sm font-semibold text-gray-600 block mb-2">View</span>
+                <div class="flex gap-4">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input 
+                            type="radio" 
+                            name="view" 
+                            value="original" 
+                            onclick="switchView('original')"
+                            class="text-enron-blue focus:ring-enron-blue"
+                        >
+                        <span class="text-sm text-gray-700">Original</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input 
+                            type="radio" 
+                            name="view" 
+                            value="formatted" 
+                            onclick="switchView('formatted')"
+                            checked
+                            class="text-enron-blue focus:ring-enron-blue"
+                        >
+                        <span class="text-sm text-gray-700">Formatted</span>
+                    </label>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Email Body -->
+    {% if is_html %}
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div id="html-rendered" class="w-full">
+            <iframe 
+                srcdoc="{{ body_content|safe }}" 
+                class="w-full min-h-[600px] md:min-h-[800px] border-0"
+                sandbox="allow-same-origin"
+            ></iframe>
+        </div>
+        <div id="html-raw" style="display: none;" class="p-6">
+            <pre class="whitespace-pre-wrap font-mono text-xs md:text-sm text-gray-800 leading-relaxed overflow-x-auto">{{ body_content_raw|e }}</pre>
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div id="body-original" style="display: none;" class="whitespace-pre-wrap font-mono text-sm md:text-base text-gray-800 leading-relaxed">{{ body_content_original|e }}</div>
+        <div id="body-formatted" class="whitespace-pre-wrap font-mono text-sm md:text-base text-gray-800 leading-relaxed">{{ body_content_formatted|e }}</div>
+    </div>
+    {% endif %}
+
+    <!-- Footer Navigation -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        {% if from_search %}
+        <a href="#" onclick="history.back(); return false;" class="text-enron-blue hover:text-blue-900 font-medium flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Back to Results
+        </a>
+        {% else %}
+        <a href="/" class="text-enron-blue hover:text-blue-900 font-medium flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Back to Search
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function switchView(viewMode) {
+    const original = document.getElementById('body-original');
+    const formatted = document.getElementById('body-formatted');
+    
+    if (!original || !formatted) {
+        console.error('Could not find body elements');
+        return;
+    }
+    
+    if (viewMode === 'original') {
+        original.style.display = 'block';
+        formatted.style.display = 'none';
+    } else {
+        original.style.display = 'none';
+        formatted.style.display = 'block';
+    }
+}
+
+function switchHtmlView(viewMode) {
+    const rendered = document.getElementById('html-rendered');
+    const raw = document.getElementById('html-raw');
+    
+    if (!rendered || !raw) {
+        console.error('Could not find HTML view elements');
+        return;
+    }
+    
+    if (viewMode === 'rendered') {
+        rendered.style.display = 'block';
+        raw.style.display = 'none';
+    } else {
+        rendered.style.display = 'none';
+        raw.style.display = 'block';
+    }
+}
+
+// Ensure formatted view is shown by default
+document.addEventListener('DOMContentLoaded', function() {
+    const original = document.getElementById('body-original');
+    const formatted = document.getElementById('body-formatted');
+    if (original && formatted) {
+        original.style.display = 'none';
+        formatted.style.display = 'block';
+    }
+});
+
+function copyMdLink() {
+    const subject = {{ subject|tojson }};
+    const path = {{ path|tojson }};
+    const mdLink = `[${subject}](${path})`;
+    
+    navigator.clipboard.writeText(mdLink).then(() => {
+        const btn = document.getElementById('copy-btn');
+        const feedback = document.getElementById('copy-feedback');
+        btn.classList.add('hidden');
+        feedback.classList.remove('hidden');
+        setTimeout(() => {
+            btn.classList.remove('hidden');
+            feedback.classList.add('hidden');
+        }, 2000);
+    }).catch(err => {
+        alert('Failed to copy: ' + err);
+    });
+}
+</script>
+{% endblock %}
+
+

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-3xl md:text-4xl font-bold text-enron-blue border-b-4 border-enron-blue pb-3 mb-4">
+            Search Results
+        </h1>
+        
+        <div class="mb-4">
+            <a href="/" class="text-enron-blue hover:text-blue-900 font-medium flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Search
+            </a>
+        </div>
+        
+        <!-- Search Criteria -->
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+            <p class="text-sm md:text-base font-semibold text-gray-800 break-words">
+                <span class="text-enron-blue">Search criteria:</span> {{ search_criteria_text }} | {{ count_text }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Results -->
+    {% if results %}
+    <div class="space-y-4">
+        {% for row in results %}
+        {% set path, date, subject, sender, recipient, body_content = row %}
+        {% set encoded_path = path|urlencode %}
+        {% set email_url = "/email?path=" + encoded_path + "&from_search=1" %}
+        
+        <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 border-l-4 border-enron-blue">
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                <div class="flex-1 min-w-0">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+                        <span class="text-sm font-medium text-gray-600 whitespace-nowrap">
+                            {{ date if date else "N/A" }}
+                        </span>
+                        {% if sender %}
+                        <span class="text-sm text-gray-500 hidden sm:inline">•</span>
+                        <span class="text-sm text-gray-600 truncate">
+                            <span class="font-medium">From:</span> {{ sender[:50] }}{% if sender|length > 50 %}...{% endif %}
+                        </span>
+                        {% endif %}
+                        {% if recipient %}
+                        <span class="text-sm text-gray-500 hidden sm:inline">•</span>
+                        <span class="text-sm text-gray-600 truncate">
+                            <span class="font-medium">To:</span> {{ recipient[:50] }}{% if recipient|length > 50 %}...{% endif %}
+                        </span>
+                        {% endif %}
+                    </div>
+                    <h2 class="text-lg md:text-xl font-semibold text-enron-blue mb-2 hover:underline">
+                        <a href="{{ email_url }}">{{ subject if subject else "(no subject)" }}</a>
+                    </h2>
+                    <p class="text-gray-700 text-sm md:text-base line-clamp-3 overflow-hidden">
+                        {{ (body_content.replace('\n', ' ').replace('\r', '') if body_content else "(no content)") }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <a href="/" class="text-enron-blue hover:text-blue-900 font-medium flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Back to Search
+        </a>
+    </div>
+    {% else %}
+    <div class="bg-white rounded-lg shadow-md p-12 text-center">
+        <p class="text-gray-600 text-lg mb-6">No results found. Try a different search term.</p>
+        <a href="/" class="inline-block px-6 py-3 bg-enron-blue text-white font-semibold rounded-lg hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-enron-blue focus:ring-offset-2 transition-colors">
+            Back to Search
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
