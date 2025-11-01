@@ -33,12 +33,6 @@ def get_total_count() -> int:
     return len(df)
 
 
-@app.route("/logo.png")
-def logo():
-    """Serve the logo.png file"""
-    return send_from_directory(".", "logo.png")
-
-
 @app.route("/favicon.png")
 def favicon():
     """Serve the favicon.png file"""
