@@ -5,37 +5,37 @@
 {% block content %}
 <div class="space-y-6">
     <!-- Header -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-3xl md:text-4xl font-bold text-enron-blue border-b-4 border-enron-blue pb-3 mb-4">
+    <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg shadow-md dark:shadow-gray-900/50 p-6">
+        <h1 class="text-3xl md:text-4xl font-bold text-enron-blue dark:text-blue-400 border-b-4 border-enron-blue dark:border-blue-400 pb-3 mb-4">
             Enron Email Corpus Search
         </h1>
         
         <!-- Database Stats -->
-        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-            <p class="text-sm md:text-base font-semibold text-gray-800">
-                <span class="text-enron-blue">Database Statistics:</span> {{ total_count|intcomma }} emails available for search
+        <div class="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-6">
+            <p class="text-sm md:text-base font-semibold text-gray-800 dark:text-white">
+                <span class="text-enron-blue dark:text-blue-400">Database Statistics:</span> {{ total_count|intcomma }} emails available for search
             </p>
         </div>
     </div>
 
     <!-- Search Form -->
-    <div class="bg-white rounded-lg shadow-md p-6">
+    <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg shadow-md dark:shadow-gray-900/50 p-6">
         <form action="/search" method="GET" class="space-y-6">
             <!-- Quick Search -->
             <div>
-                <label for="q" class="block text-lg font-semibold text-gray-800 mb-3">Quick Search</label>
+                <label for="q" class="block text-lg font-semibold text-gray-800 dark:text-white mb-3">Quick Search</label>
                 <div class="flex flex-col sm:flex-row gap-3">
                     <input 
                         type="text" 
                         id="q" 
                         name="q" 
                         placeholder="Search all fields (subject, sender, recipient, body)"
-                        class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue text-base md:text-sm"
+                        class="flex-1 px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue text-base md:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                         autofocus
                     >
                     <button 
                         type="submit" 
-                        class="px-6 py-3 bg-enron-blue text-white font-semibold rounded-lg hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-enron-blue focus:ring-offset-2 transition-colors min-w-[120px]"
+                        class="px-6 py-3 bg-enron-blue dark:bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-900 dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-enron-blue focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors min-w-[120px]"
                     >
                         Search
                     </button>
@@ -43,16 +43,16 @@
             </div>
 
             <!-- Advanced Search (Collapsible) -->
-            <div class="border-t border-gray-300 pt-6">
+            <div class="border-t border-gray-300 dark:border-gray-600 pt-6">
                 <button 
                     type="button" 
                     onclick="toggleAdvanced()"
-                    class="flex items-center justify-between w-full text-lg font-semibold text-gray-800 mb-4 focus:outline-none"
+                    class="flex items-center justify-between w-full text-lg font-semibold text-gray-800 dark:text-white mb-4 focus:outline-none"
                     aria-expanded="false"
                     id="advanced-toggle"
                 >
                     <span>Advanced Search</span>
-                    <svg id="advanced-icon" class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg id="advanced-icon" class="w-5 h-5 transform transition-transform text-gray-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </button>
@@ -60,88 +60,88 @@
                 <div id="advanced-fields" class="hidden space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label for="sender" class="block text-sm font-medium text-gray-700 mb-2">From:</label>
+                            <label for="sender" class="block text-sm font-medium text-gray-700 dark:text-white mb-2">From:</label>
                             <input 
                                 type="text" 
                                 id="sender" 
                                 name="sender" 
                                 placeholder="Sender email or name"
-                                class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue"
+                                class="w-full px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                             >
                         </div>
                         <div>
-                            <label for="recipient" class="block text-sm font-medium text-gray-700 mb-2">To:</label>
+                            <label for="recipient" class="block text-sm font-medium text-gray-700 dark:text-white mb-2">To:</label>
                             <input 
                                 type="text" 
                                 id="recipient" 
                                 name="recipient" 
                                 placeholder="Recipient email or name"
-                                class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue"
+                                class="w-full px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                             >
                         </div>
                         <div>
-                            <label for="participant" class="block text-sm font-medium text-gray-700 mb-2">Participant:</label>
+                            <label for="participant" class="block text-sm font-medium text-gray-700 dark:text-white mb-2">Participant:</label>
                             <input 
                                 type="text" 
                                 id="participant" 
                                 name="participant" 
                                 placeholder="Sender OR recipient (either)"
-                                class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue"
+                                class="w-full px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                             >
                         </div>
                         <div>
-                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">Subject:</label>
+                            <label for="subject" class="block text-sm font-medium text-gray-700 dark:text-white mb-2">Subject:</label>
                             <input 
                                 type="text" 
                                 id="subject" 
                                 name="subject" 
                                 placeholder="Subject text"
-                                class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue"
+                                class="w-full px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                             >
                         </div>
                         <div>
-                            <label for="body" class="block text-sm font-medium text-gray-700 mb-2">Body:</label>
+                            <label for="body" class="block text-sm font-medium text-gray-700 dark:text-white mb-2">Body:</label>
                             <input 
                                 type="text" 
                                 id="body" 
                                 name="body" 
                                 placeholder="Body text"
-                                class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue"
+                                class="w-full px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                             >
                         </div>
                         <div>
-                            <label for="path" class="block text-sm font-medium text-gray-700 mb-2">Path:</label>
+                            <label for="path" class="block text-sm font-medium text-gray-700 dark:text-white mb-2">Path:</label>
                             <input 
                                 type="text" 
                                 id="path" 
                                 name="path" 
                                 placeholder="Email file path (e.g., lay-k/sent)"
-                                class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue"
+                                class="w-full px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                             >
                         </div>
                         <div>
-                            <label for="start_date" class="block text-sm font-medium text-gray-700 mb-2">Date From:</label>
+                            <label for="start_date" class="block text-sm font-medium text-gray-700 dark:text-white mb-2">Date From:</label>
                             <input 
                                 type="date" 
                                 id="start_date" 
                                 name="start_date"
-                                class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue"
+                                class="w-full px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                             >
                         </div>
                         <div>
-                            <label for="end_date" class="block text-sm font-medium text-gray-700 mb-2">Date To:</label>
+                            <label for="end_date" class="block text-sm font-medium text-gray-700 dark:text-white mb-2">Date To:</label>
                             <input 
                                 type="date" 
                                 id="end_date" 
                                 name="end_date"
-                                class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue"
+                                class="w-full px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                             >
                         </div>
                     </div>
                     <div class="pt-2">
                         <button 
                             type="submit" 
-                            class="px-6 py-3 bg-enron-blue text-white font-semibold rounded-lg hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-enron-blue focus:ring-offset-2 transition-colors"
+                            class="px-6 py-3 bg-enron-blue dark:bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-900 dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-enron-blue focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors"
                         >
                             Advanced Search
                         </button>
@@ -152,18 +152,18 @@
     </div>
 
     <!-- Random Email Section -->
-    <div class="bg-white rounded-lg shadow-md p-6 text-center">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Random Email</h2>
+    <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg shadow-md dark:shadow-gray-900/50 p-6 text-center">
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">Random Email</h2>
         <div class="flex flex-col sm:flex-row gap-3 justify-center">
             <a 
                 href="/random" 
-                class="px-6 py-3 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-enron-blue focus:ring-offset-2 transition-colors"
+                class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-enron-blue focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors"
             >
                 Show Random Email
             </a>
             <a 
                 href="/random_today" 
-                class="px-6 py-3 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-enron-blue focus:ring-offset-2 transition-colors"
+                class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-enron-blue focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors"
             >
                 Show Random Email from Today's Date
             </a>
@@ -171,18 +171,18 @@
     </div>
 
     <!-- Instructions -->
-    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">How to Use</h2>
-        <div class="space-y-4 text-sm md:text-base text-gray-700">
+    <div class="bg-yellow-50 dark:bg-yellow-900/30 border-2 border-yellow-200 dark:border-yellow-800 rounded-lg p-6">
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">How to Use</h2>
+        <div class="space-y-4 text-sm md:text-base text-gray-700 dark:text-gray-200">
             <div>
-                <h3 class="font-semibold text-gray-800 mb-1">Quick Search</h3>
-                <p class="text-gray-700">Enter any text to search across all email fields (subject, sender, recipient, and body content). This is the fastest way to find emails.</p>
+                <h3 class="font-semibold text-gray-800 dark:text-white mb-1">Quick Search</h3>
+                <p class="text-gray-700 dark:text-gray-200">Enter any text to search across all email fields (subject, sender, recipient, and body content). This is the fastest way to find emails.</p>
             </div>
             
             <div>
-                <h3 class="font-semibold text-gray-800 mb-1">Advanced Search</h3>
-                <p class="text-gray-700 mb-2">Click "Advanced Search" to expand additional filters. You can search specific fields:</p>
-                <ul class="list-disc list-inside ml-2 space-y-1 text-gray-600">
+                <h3 class="font-semibold text-gray-800 dark:text-white mb-1">Advanced Search</h3>
+                <p class="text-gray-700 dark:text-gray-200 mb-2">Click "Advanced Search" to expand additional filters. You can search specific fields:</p>
+                <ul class="list-disc list-inside ml-2 space-y-1 text-gray-600 dark:text-gray-300">
                     <li><span class="font-medium">From:</span> Search by sender email or name</li>
                     <li><span class="font-medium">To:</span> Search by recipient email or name</li>
                     <li><span class="font-medium">Participant:</span> Find emails where someone appears as either sender OR recipient</li>
@@ -191,12 +191,12 @@
                     <li><span class="font-medium">Path:</span> Filter by folder path (e.g., "lay-k/sent" or "inbox")</li>
                     <li><span class="font-medium">Date Range:</span> Filter emails by date (most emails are from 1999-2003)</li>
                 </ul>
-                <p class="text-gray-700 mt-2">You can combine multiple fields to narrow your search.</p>
+                <p class="text-gray-700 dark:text-gray-200 mt-2">You can combine multiple fields to narrow your search.</p>
             </div>
             
             <div>
-                <h3 class="font-semibold text-gray-800 mb-1">Tips</h3>
-                <ul class="list-disc list-inside ml-2 space-y-1 text-gray-600">
+                <h3 class="font-semibold text-gray-800 dark:text-white mb-1">Tips</h3>
+                <ul class="list-disc list-inside ml-2 space-y-1 text-gray-600 dark:text-gray-300">
                     <li>All searches are case-insensitive</li>
                     <li>Results are limited to the first 1,000 matches per search</li>
                     <li>Click any email in the results to view its full contents</li>

@@ -5,71 +5,89 @@
 {% block content %}
 <div class="space-y-6">
     <!-- Header -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-3xl md:text-4xl font-bold text-enron-blue border-b-4 border-enron-blue pb-3 mb-4">
+    <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg shadow-md dark:shadow-gray-900/50 p-6">
+        <h1 class="text-3xl md:text-4xl font-bold text-enron-blue dark:text-blue-400 border-b-4 border-enron-blue dark:border-blue-400 pb-3 mb-4">
             Email Details
         </h1>
         
-        <div class="mb-4">
-            {% if from_search %}
-            <a href="#" onclick="history.back(); return false;" class="text-enron-blue hover:text-blue-900 font-medium flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                </svg>
-                Back to Results
+        <div class="mb-4 flex flex-col sm:flex-row gap-4 justify-between items-center">
+            <div>
+                {% if from_search %}
+                <a href="#" onclick="history.back(); return false;" class="text-enron-blue dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 font-medium flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Back to Results
+                </a>
+                {% else %}
+                <a href="/" class="text-enron-blue dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 font-medium flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Back to Search
+                </a>
+                {% endif %}
+            </div>
+            
+            {% if random_type == "random" %}
+            <a 
+                href="/random" 
+                class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-enron-blue focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors"
+            >
+                Show Another Random Email
             </a>
-            {% else %}
-            <a href="/" class="text-enron-blue hover:text-blue-900 font-medium flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                </svg>
-                Back to Search
+            {% elif random_type == "random_today" %}
+            <a 
+                href="/random_today" 
+                class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-enron-blue focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors"
+            >
+                Show Another Random Email from Today's Date
             </a>
             {% endif %}
         </div>
     </div>
 
     <!-- Email Header -->
-    <div class="bg-white rounded-lg shadow-md p-6">
+    <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg shadow-md dark:shadow-gray-900/50 p-6">
         <div class="space-y-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                    <span class="text-sm font-semibold text-gray-600 block mb-1">Date</span>
-                    <span class="text-gray-800">{{ date if date else "N/A" }}</span>
+                    <span class="text-sm font-semibold text-gray-600 dark:text-white block mb-1">Date</span>
+                    <span class="text-gray-800 dark:text-white">{{ date if date else "N/A" }}</span>
                 </div>
                 <div>
-                    <span class="text-sm font-semibold text-gray-600 block mb-1">From</span>
-                    <span class="text-gray-800 break-words">{{ sender if sender else "N/A" }}</span>
+                    <span class="text-sm font-semibold text-gray-600 dark:text-white block mb-1">From</span>
+                    <span class="text-gray-800 dark:text-white break-words">{{ sender if sender else "N/A" }}</span>
                 </div>
                 <div>
-                    <span class="text-sm font-semibold text-gray-600 block mb-1">To</span>
-                    <span class="text-gray-800 break-words">{{ recipient if recipient else "N/A" }}</span>
+                    <span class="text-sm font-semibold text-gray-600 dark:text-white block mb-1">To</span>
+                    <span class="text-gray-800 dark:text-white break-words">{{ recipient if recipient else "N/A" }}</span>
                 </div>
             </div>
             
-            <div class="border-t border-gray-200 pt-4">
-                <span class="text-sm font-semibold text-gray-600 block mb-1">Subject</span>
-                <span class="text-gray-800 text-lg">{{ subject if subject else "(no subject)" }}</span>
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+                <span class="text-sm font-semibold text-gray-600 dark:text-white block mb-1">Subject</span>
+                <span class="text-gray-800 dark:text-white text-lg">{{ subject if subject else "(no subject)" }}</span>
             </div>
             
-            <div class="border-t border-gray-200 pt-4">
-                <span class="text-sm font-semibold text-gray-600 block mb-1">Path</span>
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+                <span class="text-sm font-semibold text-gray-600 dark:text-white block mb-1">Path</span>
                 <div class="flex flex-wrap items-center gap-2">
-                    <code class="text-xs bg-gray-100 px-2 py-1 rounded text-gray-700 break-all">{{ path }}</code>
+                    <code class="text-xs bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 px-2 py-1 rounded text-gray-700 dark:text-gray-300 break-all">{{ path }}</code>
                     <button 
                         onclick="copyMdLink()" 
-                        class="text-xs px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-enron-blue transition-colors"
+                        class="text-xs px-3 py-1 bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white rounded hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-enron-blue transition-colors"
                         id="copy-btn"
                     >
                         Copy MD Link
                     </button>
-                    <span id="copy-feedback" class="text-xs text-green-600 hidden">Copied!</span>
+                    <span id="copy-feedback" class="text-xs text-green-600 dark:text-green-400 hidden">Copied!</span>
                 </div>
             </div>
             
             {% if is_html %}
-            <div class="border-t border-gray-200 pt-4">
-                <span class="text-sm font-semibold text-gray-600 block mb-2">View</span>
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+                <span class="text-sm font-semibold text-gray-600 dark:text-white block mb-2">View</span>
                 <div class="flex gap-4">
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input 
@@ -80,7 +98,7 @@
                             checked
                             class="text-enron-blue focus:ring-enron-blue"
                         >
-                        <span class="text-sm text-gray-700">Rendered</span>
+                        <span class="text-sm text-gray-700 dark:text-white">Rendered</span>
                     </label>
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input 
@@ -90,13 +108,13 @@
                             onclick="switchHtmlView('raw')"
                             class="text-enron-blue focus:ring-enron-blue"
                         >
-                        <span class="text-sm text-gray-700">Raw HTML</span>
+                        <span class="text-sm text-gray-700 dark:text-white">Raw HTML</span>
                     </label>
                 </div>
             </div>
             {% else %}
-            <div class="border-t border-gray-200 pt-4">
-                <span class="text-sm font-semibold text-gray-600 block mb-2">View</span>
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+                <span class="text-sm font-semibold text-gray-600 dark:text-white block mb-2">View</span>
                 <div class="flex gap-4">
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input 
@@ -106,7 +124,7 @@
                             onclick="switchView('original')"
                             class="text-enron-blue focus:ring-enron-blue"
                         >
-                        <span class="text-sm text-gray-700">Original</span>
+                        <span class="text-sm text-gray-700 dark:text-white">Original</span>
                     </label>
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input 
@@ -117,7 +135,7 @@
                             checked
                             class="text-enron-blue focus:ring-enron-blue"
                         >
-                        <span class="text-sm text-gray-700">Formatted</span>
+                        <span class="text-sm text-gray-700 dark:text-white">Formatted</span>
                     </label>
                 </div>
             </div>
@@ -127,7 +145,7 @@
 
     <!-- Email Body -->
     {% if is_html %}
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg shadow-md dark:shadow-gray-900/50 overflow-hidden">
         <div id="html-rendered" class="w-full">
             <iframe 
                 srcdoc="{{ body_content|safe }}" 
@@ -136,33 +154,53 @@
             ></iframe>
         </div>
         <div id="html-raw" style="display: none;" class="p-6">
-            <pre class="whitespace-pre-wrap font-mono text-xs md:text-sm text-gray-800 leading-relaxed overflow-x-auto">{{ body_content_raw|e }}</pre>
+            <pre class="whitespace-pre-wrap font-mono text-xs md:text-sm text-gray-800 dark:text-white leading-relaxed overflow-x-auto">{{ body_content_raw|e }}</pre>
         </div>
     </div>
     {% else %}
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <div id="body-original" style="display: none;" class="whitespace-pre-wrap font-mono text-sm md:text-base text-gray-800 leading-relaxed">{{ body_content_original|e }}</div>
-        <div id="body-formatted" class="whitespace-pre-wrap font-mono text-sm md:text-base text-gray-800 leading-relaxed">{{ body_content_formatted|e }}</div>
+    <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg shadow-md dark:shadow-gray-900/50 p-6">
+        <div id="body-original" style="display: none;" class="whitespace-pre-wrap font-mono text-sm md:text-base text-gray-800 dark:text-white leading-relaxed">{{ body_content_original|e }}</div>
+        <div id="body-formatted" class="whitespace-pre-wrap font-mono text-sm md:text-base text-gray-800 dark:text-white leading-relaxed">{{ body_content_formatted|e }}</div>
     </div>
     {% endif %}
 
     <!-- Footer Navigation -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        {% if from_search %}
-        <a href="#" onclick="history.back(); return false;" class="text-enron-blue hover:text-blue-900 font-medium flex items-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-            </svg>
-            Back to Results
-        </a>
-        {% else %}
-        <a href="/" class="text-enron-blue hover:text-blue-900 font-medium flex items-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-            </svg>
-            Back to Search
-        </a>
-        {% endif %}
+    <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg shadow-md dark:shadow-gray-900/50 p-6">
+        <div class="flex flex-col sm:flex-row gap-4 justify-between items-center">
+            <div>
+                {% if from_search %}
+                <a href="#" onclick="history.back(); return false;" class="text-enron-blue dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 font-medium flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Back to Results
+                </a>
+                {% else %}
+                <a href="/" class="text-enron-blue dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 font-medium flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Back to Search
+                </a>
+                {% endif %}
+            </div>
+            
+            {% if random_type == "random" %}
+            <a 
+                href="/random" 
+                class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-enron-blue focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors"
+            >
+                Show Another Random Email
+            </a>
+            {% elif random_type == "random_today" %}
+            <a 
+                href="/random_today" 
+                class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-enron-blue focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors"
+            >
+                Show Another Random Email from Today's Date
+            </a>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}

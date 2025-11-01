@@ -6,7 +6,7 @@ Features: Responsive design with Tailwind CSS, mobile-first approach
 
 import html
 import urllib.parse
-from datetime import datetime
+from datetime import datetime, timedelta, date
 from typing import List, Tuple, Optional
 import os
 
@@ -135,6 +135,7 @@ def email():
     """Display full email content"""
     email_path = request.args.get("path", "").strip()
     from_search = request.args.get("from_search", "0") == "1"
+    random_type = request.args.get("random_type", "").strip()  # "random" or "random_today" or ""
 
     if not email_path:
         return "Email path required", 400
@@ -154,12 +155,16 @@ def email():
     # Format values for template (Jinja2 will auto-escape, so we don't escape here)
     if email_date:
         if isinstance(email_date, datetime):
-            date_str = email_date.strftime("%Y-%m-%d %I:%M:%S %p")
+            # Subtract 5 hours for timezone adjustment
+            adjusted_date = email_date - timedelta(hours=5)
+            date_str = adjusted_date.strftime("%Y-%m-%d %I:%M %p")
         else:
             # Try to parse and reformat if it's a string
             try:
                 dt = datetime.fromisoformat(str(email_date).replace('Z', '+00:00'))
-                date_str = dt.strftime("%Y-%m-%d %I:%M:%S %p")
+                # Subtract 5 hours for timezone adjustment
+                adjusted_date = dt - timedelta(hours=5)
+                date_str = adjusted_date.strftime("%Y-%m-%d %I:%M %p")
             except (ValueError, AttributeError):
                 date_str = str(email_date)
     else:
@@ -223,7 +228,8 @@ def email():
         body_content_raw=body_content_raw,
         body_content_original=body_content_original,
         body_content_formatted=body_content_formatted,
-        from_search=from_search
+        from_search=from_search,
+        random_type=random_type
     )
 
 
@@ -237,7 +243,7 @@ def random_email():
 
     path = email_data[0]
     encoded_path = urllib.parse.quote(path)
-    return redirect(url_for("email", path=encoded_path))
+    return redirect(url_for("email", path=encoded_path, random_type="random"))
 
 
 @app.route("/random_today")
@@ -246,13 +252,12 @@ def random_today_email():
     email_data = get_random_today_email()
 
     if email_data is None:
-        from datetime import date
         today = date.today()
         return f"No emails found for {today.strftime('%B %d')}", 404
 
     path = email_data[0]
     encoded_path = urllib.parse.quote(path)
-    return redirect(url_for("email", path=encoded_path))
+    return redirect(url_for("email", path=encoded_path, random_type="random_today"))
 
 
 def search_emails(
@@ -307,18 +312,16 @@ def search_emails(
 
     # Date filtering
     if start_date:
-        from datetime import date as dt_date, datetime as dt_datetime
-        start_dt = dt_date(year=int(start_date[:4]), month=int(start_date[5:7]), day=int(start_date[8:10]))
+        start_dt = date(year=int(start_date[:4]), month=int(start_date[5:7]), day=int(start_date[8:10]))
         # Convert date to datetime for comparison
-        start_datetime = dt_datetime.combine(start_dt, dt_datetime.min.time())
+        start_datetime = datetime.combine(start_dt, datetime.min.time())
         filters.append(pl.col("date") >= start_datetime)
 
     if end_date:
         # Add one day to make it inclusive
-        from datetime import date as dt_date, datetime as dt_datetime, timedelta
-        end_dt = dt_date(year=int(end_date[:4]), month=int(end_date[5:7]), day=int(end_date[8:10])) + timedelta(days=1)
+        end_dt = date(year=int(end_date[:4]), month=int(end_date[5:7]), day=int(end_date[8:10])) + timedelta(days=1)
         # Convert date to datetime for comparison
-        end_datetime = dt_datetime.combine(end_dt, dt_datetime.min.time())
+        end_datetime = datetime.combine(end_dt, datetime.min.time())
         filters.append(pl.col("date") < end_datetime)
 
     # Apply all filters
@@ -345,7 +348,9 @@ def search_emails(
         if date_val:
             # Format datetime to show only date part
             if isinstance(date_val, datetime):
-                date_str = date_val.strftime("%Y-%m-%d")
+                # Subtract 5 hours for timezone adjustment before formatting date
+                adjusted_date = date_val - timedelta(hours=5)
+                date_str = adjusted_date.strftime("%Y-%m-%d")
             else:
                 date_str = str(date_val).split()[0] if " " in str(date_val) else str(date_val)
         else:
@@ -381,8 +386,6 @@ def get_random_email() -> Optional[Tuple]:
 
 def get_random_today_email() -> Optional[Tuple]:
     """Get a random email from today's date (any year)"""
-    from datetime import date
-
     today = date.today()
     month = today.month
     day = today.day
