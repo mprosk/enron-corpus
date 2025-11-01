@@ -81,7 +81,15 @@
                     >
                         Copy MD Link
                     </button>
+                    <button 
+                        onclick="copyUrl()" 
+                        class="text-xs px-3 py-1 bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white rounded hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-enron-blue transition-colors"
+                        id="copy-url-btn"
+                    >
+                        Copy URL
+                    </button>
                     <span id="copy-feedback" class="text-xs text-green-600 dark:text-green-400 hidden">Copied!</span>
+                    <span id="copy-url-feedback" class="text-xs text-green-600 dark:text-green-400 hidden">Copied!</span>
                 </div>
             </div>
             
@@ -154,13 +162,13 @@
             ></iframe>
         </div>
         <div id="html-raw" style="display: none;" class="p-6">
-            <pre class="whitespace-pre-wrap font-mono text-xs md:text-sm text-gray-800 dark:text-white leading-relaxed overflow-x-auto">{{ body_content_raw|e }}</pre>
+            <pre class="whitespace-pre-wrap font-mono text-xs md:text-sm text-gray-800 dark:text-white leading-relaxed email-body-wrap">{{ body_content_raw|e }}</pre>
         </div>
     </div>
     {% else %}
     <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg shadow-md dark:shadow-gray-900/50 p-6">
-        <div id="body-original" style="display: none;" class="whitespace-pre-wrap font-mono text-sm md:text-base text-gray-800 dark:text-white leading-relaxed">{{ body_content_original|e }}</div>
-        <div id="body-formatted" class="whitespace-pre-wrap font-mono text-sm md:text-base text-gray-800 dark:text-white leading-relaxed">{{ body_content_formatted|e }}</div>
+        <div id="body-original" style="display: none;" class="whitespace-pre-wrap font-mono text-sm md:text-base text-gray-800 dark:text-white leading-relaxed email-body-wrap">{{ body_content_original|e }}</div>
+        <div id="body-formatted" class="whitespace-pre-wrap font-mono text-sm md:text-base text-gray-800 dark:text-white leading-relaxed email-body-wrap">{{ body_content_formatted|e }}</div>
     </div>
     {% endif %}
 
@@ -261,6 +269,28 @@ function copyMdLink() {
     navigator.clipboard.writeText(mdLink).then(() => {
         const btn = document.getElementById('copy-btn');
         const feedback = document.getElementById('copy-feedback');
+        btn.classList.add('hidden');
+        feedback.classList.remove('hidden');
+        setTimeout(() => {
+            btn.classList.remove('hidden');
+            feedback.classList.add('hidden');
+        }, 2000);
+    }).catch(err => {
+        alert('Failed to copy: ' + err);
+    });
+}
+
+function copyUrl() {
+    const path = {{ path|tojson }};
+    // Remove trailing period from path
+    const cleanPath = path.endsWith('.') ? path.slice(0, -1) : path;
+    // URL encode the path segments separately to preserve slashes
+    const encodedPath = cleanPath.split('/').map(segment => encodeURIComponent(segment)).join('/');
+    const url = `${window.location.origin}/email?path=${encodedPath}`;
+    
+    navigator.clipboard.writeText(url).then(() => {
+        const btn = document.getElementById('copy-url-btn');
+        const feedback = document.getElementById('copy-url-feedback');
         btn.classList.add('hidden');
         feedback.classList.remove('hidden');
         setTimeout(() => {

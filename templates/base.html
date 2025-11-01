@@ -32,6 +32,11 @@
         html.dark body {
             background-color: #111827; /* bg-gray-900 */
         }
+        /* Word wrapping for email bodies - break at words first, then break long strings */
+        .email-body-wrap {
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
     </style>
     <link rel="icon" type="image/png" href="/favicon.png">
     <title>{% block title %}Enron Email Corpus Search{% endblock %}</title>
