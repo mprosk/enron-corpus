@@ -333,16 +333,21 @@ def search_emails(
     else:
         filtered_df = df
 
-    # Get total count
-    total_count = len(filtered_df)
-
-    # Sort by date descending and limit to 1000
-    results_df = filtered_df.sort("date", descending=True).head(1000)
-
+    # Sort by date descending first, then deduplicate to keep the most recent email for each (subject, body) pair
+    sorted_df = filtered_df.sort("date", descending=True)
+    deduplicated_df = sorted_df.unique(subset=["subject", "body"], keep="first")
+    
+    # Get deduplicated count
+    total_count = len(deduplicated_df)
+    
+    # Sort again by date descending to ensure newest emails are first, then limit to 1000 results
+    results_df = deduplicated_df.sort("date", descending=True).head(1000)
+    
     # Convert to list of tuples matching the original format
     # Column order: path, date, subject, sender, recipient, body
     # Format dates as strings for template rendering
     results = []
+    
     for row in results_df.iter_rows(named=False):
         date_val = row[1]
         if date_val:
@@ -355,6 +360,7 @@ def search_emails(
                 date_str = str(date_val).split()[0] if " " in str(date_val) else str(date_val)
         else:
             date_str = None
+        
         results.append((row[0], date_str, row[2], row[3], row[4], row[5]))  # path, date, subject, sender, recipient, body
 
     return results, total_count
