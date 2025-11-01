@@ -25,6 +25,18 @@ Parse the emails and store them in a Parquet file and SQL database
 python import_emails.py
 ```
 
+## Running the viewer
+
+Flask + Parquet:
+```
+python web_viewer_flask.py
+```
+
+Built-in only + SQL:
+```
+python web_viewer.py
+```
+
 
 ## Saved Emails
 
@@ -93,6 +105,7 @@ My list of weird, interesting, funny, or otherwise notable emails in the corpus
   - https://web.archive.org/web/20040401184701/http://members.iglou.com:80/lyons/bitchGen.html
 - [something groovy fr. the Dali Lama](maildir/lenhart-m/sent_items/66.)
 - [RE: the atmosphere at this](maildir/lenhart-m/sent_items/822.)
+- [FW: guide](maildir/dorland-c/sent_items/364.)
 
 - leads to chase:
   - maildir/lenhart-m/sent_items/504.
