@@ -58,15 +58,43 @@ List of weird, interesting, funny, or otherwise notable emails in the corpus
 - [(no subject)](maildir/lenhart-m/deleted_items/414.)
 - [FW: Spontaneous Combustion](maildir/williams-w3/symesees/71.)
 - [Suggestions to help short term morale](maildir/beck-s/inbox/483.)
+- [RE:](maildir/richey-c/personal/2.)
+- [RE:](maildir/richey-c/sent_items/234.)
+- [RE: What happened...](maildir/richey-c/sent_items/221.)
+- [RE:](maildir/richey-c/sent_items/193.)
+- [not a bad way to go](maildir/bass-e/deleted_items/39.)
+- [Absolutely the best cat story I have ever heard](maildir/donoho-l/inbox/junk_file/104.)
+- [RE: dream](maildir/stokley-c/chris_stokley/sent/121.)
+- [Is there pornography on your computer? FREE System Check](maildir/mims-thurston-p/deleted_items/92.)
+- [Re: Child Labor](maildir/cash-m/sent_items/231.)
+- [FW: New Math](maildir/shackleton-s/deleted_items/571.)
+- [you can appreciate this](maildir/hyatt-k/sent_items/188.)
+- [FW: i luv this one](maildir/lokey-t/sent_items/139.)
+- [FW: quite amusing....](maildir/hyatt-k/deleted_items/370.)
+- [FW: The Real Story on Enron...](maildir/shackleton-s/inbox/678.)
+- [Corn Pudding](maildir/white-s/inbox/205.)
+- [(no subject)](maildir/lay-k/inbox/888.)
+- [RE: KILL!](maildir/parks-j/sent_items/753.)
+- [FW: FW: Chili contest](maildir/white-s/inbox/128.)
+- [Thank you and Stay Strong](maildir/lay-k/inbox/309.)
+- [Re:  Jeff's Leaving](maildir/lay-k/sent_items/6.)
+- [LJM/Raptor valuations](maildir/buy-r/inbox/1076.)
+  - [FW: Raptors](maildir/kaminski-v/inbox/92.)
+- [FW: Text of Letter to Enron's Chairman After Departure of Chief Executive](maildir/dorland-c/deleted_items/140.)
+- [FW: FW: Do this, it's hilarious!](maildir/lenhart-m/sent_items/339.)
+- [Fwd: FW: Children's Books You'll NEVER See!](maildir/lenhart-m/discussion_threads/203.)
+- [FW: ONE WEEK till Pajama Pub Crawl](maildir/lenhart-m/all_documents/1587.)
+- [Fwd: Fw: Click on the link and see what happens](maildir/lenhart-m/discussion_threads/361.)
+  - https://web.archive.org/web/20001018153603/http://home.att.net/~viseguy/fun.html
+- [Re: The 9th Friday State of the Union](maildir/lenhart-m/sent_items/51.)
+- [Re: FW: Prison Bitch Name Generator](maildir/lenhart-m/discussion_threads/143.)
+  - https://web.archive.org/web/20040401184701/http://members.iglou.com:80/lyons/bitchGen.html
+- [something groovy fr. the Dali Lama](maildir/lenhart-m/sent_items/66.)
+- [RE: the atmosphere at this](maildir/lenhart-m/sent_items/822.)
 
 - leads to chase:
-  - maildir/rodrique-r/_sent_mail/367.
-    - FROM:    robin.rodrigue@enron.com
-      TO:      gabriel.monroy@enron.com
-  - maildir/richey-c/sent_items/40.
   - maildir/lenhart-m/sent_items/504.
-    - FROM:   matthew.lenhart@enron.com 
-      TO:    erichardson@sarofim.com
+    - participant: richardson@sarofim.com
   - FROM:   matthew.lenhart@enron.com 
     TO:    chad.landry@enron.com
 
