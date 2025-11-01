@@ -29,12 +29,7 @@ python import_emails.py
 
 Flask + Parquet:
 ```
-python web_viewer_flask.py
-```
-
-Built-in only + SQL:
-```
-python web_viewer.py
+python flask_app.py
 ```
 
 
