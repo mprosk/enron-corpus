@@ -106,6 +106,7 @@ My list of weird, interesting, funny, or otherwise notable emails in the corpus
 - [something groovy fr. the Dali Lama](maildir/lenhart-m/sent_items/66.)
 - [RE: the atmosphere at this](maildir/lenhart-m/sent_items/822.)
 - [FW: guide](maildir/dorland-c/sent_items/364.)
+- [FW: Painting in the Nude](maildir/baughman-d/deleted_items/211.)
 
 - leads to chase:
   - maildir/lenhart-m/sent_items/504.

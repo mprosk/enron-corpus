@@ -10,7 +10,7 @@ from typing import List, Tuple, Optional
 import os
 
 import polars as pl
-from flask import Flask, render_template_string, request, redirect, url_for
+from flask import Flask, render_template_string, request, redirect, url_for, send_from_directory
 
 app = Flask(__name__)
 
@@ -33,6 +33,18 @@ def get_total_count() -> int:
     return len(df)
 
 
+@app.route("/logo.png")
+def logo():
+    """Serve the logo.png file"""
+    return send_from_directory(".", "logo.png")
+
+
+@app.route("/favicon.png")
+def favicon():
+    """Serve the favicon.png file"""
+    return send_from_directory(".", "favicon.png")
+
+
 @app.route("/")
 @app.route("/index.html")
 def index():
@@ -41,6 +53,7 @@ def index():
     html_content = """<!DOCTYPE html>
 <html>
 <head>
+    <link rel="icon" type="image/png" href="/favicon.png">
     <title>Enron Email Corpus Search</title>
     <style>
         body {
@@ -165,11 +178,11 @@ def index():
                         </tr>
                         <tr>
                             <td style="border: none; padding: 5px;"><label for="start_date">Date From:</label></td>
-                            <td style="border: none; padding: 5px;"><input type="date" id="start_date" name="start_date" style="width: 95%;"></td>
+                            <td style="border: none; padding: 5px;"><input type="date" id="start_date" name="start_date""></td>
                         </tr>
                         <tr>
                             <td style="border: none; padding: 5px;"><label for="end_date">Date To:</label></td>
-                            <td style="border: none; padding: 5px;"><input type="date" id="end_date" name="end_date" style="width: 95%;"></td>
+                            <td style="border: none; padding: 5px;"><input type="date" id="end_date" name="end_date"></td>
                         </tr>
                     </table>
                     <div style="margin-top: 10px; margin-left: 100px;">
@@ -264,6 +277,7 @@ def search():
     html_content = f"""<!DOCTYPE html>
 <html>
 <head>
+    <link rel="icon" type="image/png" href="/favicon.png">
     <title>Search Results</title>
     <style>
         body {{
@@ -513,6 +527,7 @@ def email():
     html_content = f"""<!DOCTYPE html>
 <html>
 <head>
+    <link rel="icon" type="image/png" href="/favicon.png">
     <title>{subject_str}</title>
     <style>
         body {{
