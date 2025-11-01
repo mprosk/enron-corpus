@@ -1,2 +1,12 @@
+# Main dependencies
 polars
 flask
+
+# Required for exporting Polars DataFrame to SQLite database
+pandas
+sqlalchemy
+pyarrow
+
+# Formatting
+black
+isort

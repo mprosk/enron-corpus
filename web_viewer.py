@@ -4,11 +4,11 @@ Simple Web 1.0-style Enron Email Corpus Viewer
 Uses only Python standard library - no external packages required
 """
 
-import sqlite3
 import html
+import sqlite3
 import urllib.parse
-from http.server import HTTPServer, BaseHTTPRequestHandler
-from typing import List, Tuple, Optional
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from typing import List, Optional, Tuple
 
 DATABASE = "enron.db"
 

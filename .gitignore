@@ -3,6 +3,7 @@ enron_mail_20150507.tar.gz
 enron.db
 enron.pq
 maildir/
+*.bak
 
 # OS Files
 .DS_Store

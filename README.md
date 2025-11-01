@@ -20,9 +20,9 @@ Make the files read-only (optional):
 chmod -R -w maildir/
 ```
 
-Create the Parquet file
+Parse the emails and store them in a Parquet file and SQL database
 ```
-python emails2pq.py
+python import_emails.py
 ```
 
 
