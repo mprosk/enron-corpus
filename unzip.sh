@@ -1,4 +1,0 @@
-#! /bin/bash
-
-tar -xvzf enron_mail_20150507.tar.gz
-
