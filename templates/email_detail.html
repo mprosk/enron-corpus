@@ -95,56 +95,100 @@
             
             {% if is_html %}
             <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
-                <span class="text-sm font-semibold text-gray-600 dark:text-white block mb-2">View</span>
-                <div class="flex gap-4">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input 
-                            type="radio" 
-                            name="view" 
-                            value="rendered" 
-                            onclick="switchHtmlView('rendered')"
-                            checked
-                            class="text-enron-blue focus:ring-enron-blue"
+                <div class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+                    <div>
+                        <span class="text-sm font-semibold text-gray-600 dark:text-white block mb-2">View</span>
+                        <div class="flex gap-4">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input 
+                                    type="radio" 
+                                    name="view" 
+                                    value="rendered" 
+                                    onclick="switchHtmlView('rendered')"
+                                    checked
+                                    class="text-enron-blue focus:ring-enron-blue"
+                                >
+                                <span class="text-sm text-gray-700 dark:text-white">Rendered</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input 
+                                    type="radio" 
+                                    name="view" 
+                                    value="raw" 
+                                    onclick="switchHtmlView('raw')"
+                                    class="text-enron-blue focus:ring-enron-blue"
+                                >
+                                <span class="text-sm text-gray-700 dark:text-white">Raw HTML</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <button 
+                            onclick="copyBody()" 
+                            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white rounded hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-enron-blue transition-colors text-sm font-medium"
+                            id="copy-body-btn"
                         >
-                        <span class="text-sm text-gray-700 dark:text-white">Rendered</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input 
-                            type="radio" 
-                            name="view" 
-                            value="raw" 
-                            onclick="switchHtmlView('raw')"
-                            class="text-enron-blue focus:ring-enron-blue"
+                            Copy Body
+                        </button>
+                        <button 
+                            onclick="copyEmail()" 
+                            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white rounded hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-enron-blue transition-colors text-sm font-medium"
+                            id="copy-email-btn"
                         >
-                        <span class="text-sm text-gray-700 dark:text-white">Raw HTML</span>
-                    </label>
+                            Copy Email
+                        </button>
+                        <span id="copy-body-feedback" class="text-sm text-green-600 dark:text-green-400 hidden">Copied!</span>
+                        <span id="copy-email-feedback" class="text-sm text-green-600 dark:text-green-400 hidden">Copied!</span>
+                    </div>
                 </div>
             </div>
             {% else %}
             <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
-                <span class="text-sm font-semibold text-gray-600 dark:text-white block mb-2">View</span>
-                <div class="flex gap-4">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input 
-                            type="radio" 
-                            name="view" 
-                            value="original" 
-                            onclick="switchView('original')"
-                            class="text-enron-blue focus:ring-enron-blue"
+                <div class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+                    <div>
+                        <span class="text-sm font-semibold text-gray-600 dark:text-white block mb-2">View</span>
+                        <div class="flex gap-4">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input 
+                                    type="radio" 
+                                    name="view" 
+                                    value="original" 
+                                    onclick="switchView('original')"
+                                    class="text-enron-blue focus:ring-enron-blue"
+                                >
+                                <span class="text-sm text-gray-700 dark:text-white">Original</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input 
+                                    type="radio" 
+                                    name="view" 
+                                    value="formatted" 
+                                    onclick="switchView('formatted')"
+                                    checked
+                                    class="text-enron-blue focus:ring-enron-blue"
+                                >
+                                <span class="text-sm text-gray-700 dark:text-white">Formatted</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <button 
+                            onclick="copyBody()" 
+                            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white rounded hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-enron-blue transition-colors text-sm font-medium"
+                            id="copy-body-btn"
                         >
-                        <span class="text-sm text-gray-700 dark:text-white">Original</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input 
-                            type="radio" 
-                            name="view" 
-                            value="formatted" 
-                            onclick="switchView('formatted')"
-                            checked
-                            class="text-enron-blue focus:ring-enron-blue"
+                            Copy Body
+                        </button>
+                        <button 
+                            onclick="copyEmail()" 
+                            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white rounded hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-enron-blue transition-colors text-sm font-medium"
+                            id="copy-email-btn"
                         >
-                        <span class="text-sm text-gray-700 dark:text-white">Formatted</span>
-                    </label>
+                            Copy Email
+                        </button>
+                        <span id="copy-body-feedback" class="text-sm text-green-600 dark:text-green-400 hidden">Copied!</span>
+                        <span id="copy-email-feedback" class="text-sm text-green-600 dark:text-green-400 hidden">Copied!</span>
+                    </div>
                 </div>
             </div>
             {% endif %}
@@ -291,6 +335,189 @@ function copyUrl() {
     navigator.clipboard.writeText(url).then(() => {
         const btn = document.getElementById('copy-url-btn');
         const feedback = document.getElementById('copy-url-feedback');
+        btn.classList.add('hidden');
+        feedback.classList.remove('hidden');
+        setTimeout(() => {
+            btn.classList.remove('hidden');
+            feedback.classList.add('hidden');
+        }, 2000);
+    }).catch(err => {
+        alert('Failed to copy: ' + err);
+    });
+}
+
+function copyBody() {
+    let textToCopy = '';
+    
+    // Check if this is an HTML email or plain text email
+    const htmlRendered = document.getElementById('html-rendered');
+    const htmlRaw = document.getElementById('html-raw');
+    const bodyOriginal = document.getElementById('body-original');
+    const bodyFormatted = document.getElementById('body-formatted');
+    
+    // Helper function to check if element is visible
+    function isVisible(element) {
+        if (!element) return false;
+        const style = window.getComputedStyle(element);
+        return style.display !== 'none' && style.visibility !== 'hidden';
+    }
+    
+    if (htmlRendered && htmlRaw) {
+        // HTML email
+        const renderedVisible = isVisible(htmlRendered);
+        const rawVisible = isVisible(htmlRaw);
+        
+        if (renderedVisible) {
+            // Try to get text from iframe
+            try {
+                const iframe = htmlRendered.querySelector('iframe');
+                if (iframe && iframe.contentDocument && iframe.contentDocument.body) {
+                    textToCopy = iframe.contentDocument.body.innerText || iframe.contentDocument.body.textContent || '';
+                } else {
+                    // Fallback: use raw HTML text
+                    const rawPre = htmlRaw.querySelector('pre');
+                    if (rawPre) {
+                        textToCopy = rawPre.textContent || rawPre.innerText || '';
+                    }
+                }
+            } catch (e) {
+                // If we can't access iframe content (cross-origin or other issues), use raw HTML
+                const rawPre = htmlRaw.querySelector('pre');
+                if (rawPre) {
+                    textToCopy = rawPre.textContent || rawPre.innerText || '';
+                }
+            }
+        } else if (rawVisible) {
+            // Raw HTML view
+            const rawPre = htmlRaw.querySelector('pre');
+            if (rawPre) {
+                textToCopy = rawPre.textContent || rawPre.innerText || '';
+            }
+        }
+    } else if (bodyOriginal && bodyFormatted) {
+        // Plain text email
+        const originalVisible = isVisible(bodyOriginal);
+        const formattedVisible = isVisible(bodyFormatted);
+        
+        if (originalVisible) {
+            textToCopy = bodyOriginal.textContent || bodyOriginal.innerText || '';
+        } else if (formattedVisible) {
+            textToCopy = bodyFormatted.textContent || bodyFormatted.innerText || '';
+        }
+    }
+    
+    // Trim whitespace
+    textToCopy = textToCopy.trim();
+    
+    if (!textToCopy) {
+        alert('No body content to copy');
+        return;
+    }
+    
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        const btn = document.getElementById('copy-body-btn');
+        const feedback = document.getElementById('copy-body-feedback');
+        btn.classList.add('hidden');
+        feedback.classList.remove('hidden');
+        setTimeout(() => {
+            btn.classList.remove('hidden');
+            feedback.classList.add('hidden');
+        }, 2000);
+    }).catch(err => {
+        alert('Failed to copy: ' + err);
+    });
+}
+
+function copyEmail() {
+    // Get email metadata from template
+    const path = {{ path|tojson }};
+    const sender = {{ sender|tojson }};
+    const recipient = {{ recipient|tojson }};
+    const date = {{ date|tojson }};
+    const subject = {{ subject|tojson }};
+    
+    // Get body text (reuse logic from copyBody)
+    let bodyText = '';
+    
+    const htmlRendered = document.getElementById('html-rendered');
+    const htmlRaw = document.getElementById('html-raw');
+    const bodyOriginal = document.getElementById('body-original');
+    const bodyFormatted = document.getElementById('body-formatted');
+    
+    // Helper function to check if element is visible
+    function isVisible(element) {
+        if (!element) return false;
+        const style = window.getComputedStyle(element);
+        return style.display !== 'none' && style.visibility !== 'hidden';
+    }
+    
+    if (htmlRendered && htmlRaw) {
+        // HTML email
+        const renderedVisible = isVisible(htmlRendered);
+        const rawVisible = isVisible(htmlRaw);
+        
+        if (renderedVisible) {
+            // Try to get text from iframe
+            try {
+                const iframe = htmlRendered.querySelector('iframe');
+                if (iframe && iframe.contentDocument && iframe.contentDocument.body) {
+                    bodyText = iframe.contentDocument.body.innerText || iframe.contentDocument.body.textContent || '';
+                } else {
+                    // Fallback: use raw HTML text
+                    const rawPre = htmlRaw.querySelector('pre');
+                    if (rawPre) {
+                        bodyText = rawPre.textContent || rawPre.innerText || '';
+                    }
+                }
+            } catch (e) {
+                // If we can't access iframe content (cross-origin or other issues), use raw HTML
+                const rawPre = htmlRaw.querySelector('pre');
+                if (rawPre) {
+                    bodyText = rawPre.textContent || rawPre.innerText || '';
+                }
+            }
+        } else if (rawVisible) {
+            // Raw HTML view
+            const rawPre = htmlRaw.querySelector('pre');
+            if (rawPre) {
+                bodyText = rawPre.textContent || rawPre.innerText || '';
+            }
+        }
+    } else if (bodyOriginal && bodyFormatted) {
+        // Plain text email
+        const originalVisible = isVisible(bodyOriginal);
+        const formattedVisible = isVisible(bodyFormatted);
+        
+        if (originalVisible) {
+            bodyText = bodyOriginal.textContent || bodyOriginal.innerText || '';
+        } else if (formattedVisible) {
+            bodyText = bodyFormatted.textContent || bodyFormatted.innerText || '';
+        }
+    }
+    
+    // Trim whitespace
+    bodyText = bodyText.trim();
+    
+    // Format header: center path with "=" padding (80 chars wide)
+    function centerText(text, width) {
+        const textLen = text.length;
+        if (textLen >= width) {
+            return text;
+        }
+        const padding = width - textLen;
+        const leftPad = Math.floor(padding / 2);
+        const rightPad = padding - leftPad;
+        return '='.repeat(leftPad) + text + '='.repeat(rightPad);
+    }
+    
+    const centeredPath = centerText(` ${path} `, 80);
+    
+    // Build the formatted email text
+    const emailText = `${centeredPath}\nFROM: ${sender}\nTO: ${recipient}\nDATE: ${date}\nSUBJECT: ${subject}\n\n${bodyText}`;
+    
+    navigator.clipboard.writeText(emailText).then(() => {
+        const btn = document.getElementById('copy-email-btn');
+        const feedback = document.getElementById('copy-email-feedback');
         btn.classList.add('hidden');
         feedback.classList.remove('hidden');
         setTimeout(() => {
