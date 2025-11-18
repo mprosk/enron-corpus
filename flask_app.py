@@ -6,7 +6,7 @@ Features: Responsive design with Tailwind CSS, mobile-first approach
 
 import html
 import urllib.parse
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta, date, timezone
 from typing import List, Tuple, Optional
 import os
 
@@ -313,15 +313,15 @@ def search_emails(
     # Date filtering
     if start_date:
         start_dt = date(year=int(start_date[:4]), month=int(start_date[5:7]), day=int(start_date[8:10]))
-        # Convert date to datetime for comparison
-        start_datetime = datetime.combine(start_dt, datetime.min.time())
+        # Convert date to timezone-aware datetime (UTC) for comparison
+        start_datetime = datetime.combine(start_dt, datetime.min.time(), tzinfo=timezone.utc)
         filters.append(pl.col("date") >= start_datetime)
 
     if end_date:
         # Add one day to make it inclusive
         end_dt = date(year=int(end_date[:4]), month=int(end_date[5:7]), day=int(end_date[8:10])) + timedelta(days=1)
-        # Convert date to datetime for comparison
-        end_datetime = datetime.combine(end_dt, datetime.min.time())
+        # Convert date to timezone-aware datetime (UTC) for comparison
+        end_datetime = datetime.combine(end_dt, datetime.min.time(), tzinfo=timezone.utc)
         filters.append(pl.col("date") < end_datetime)
 
     # Apply all filters
