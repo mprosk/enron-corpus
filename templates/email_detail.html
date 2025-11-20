@@ -308,7 +308,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function copyMdLink() {
     const subject = {{ subject|tojson }};
     const path = {{ path|tojson }};
-    const mdLink = `[${subject}](${path})`;
+    // Remove trailing period from path
+    const cleanPath = path.endsWith('.') ? path.slice(0, -1) : path;
+    // URL encode the path segments separately to preserve slashes
+    const encodedPath = cleanPath.split('/').map(segment => encodeURIComponent(segment)).join('/');
+    const url = `${window.location.origin}/email?path=${encodedPath}`;
+    const mdLink = `[${subject}](${url})`;
     
     navigator.clipboard.writeText(mdLink).then(() => {
         const btn = document.getElementById('copy-btn');
