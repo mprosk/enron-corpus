@@ -22,7 +22,7 @@ chmod -R -w maildir/
 
 Parse the emails and store them in a Parquet file and SQL database
 ```
-python import_emails.py
+python util/import_emails.py
 ```
 
 ## Running the viewer
@@ -102,6 +102,12 @@ My list of weird, interesting, funny, or otherwise notable emails in the corpus
 - [RE: the atmosphere at this](https://mprosk.pythonanywhere.com/email?path=maildir/lenhart-m/sent_items/822.)
 - [FW: guide](https://mprosk.pythonanywhere.com/email?path=maildir/dorland-c/sent_items/364.)
 - [FW: Painting in the Nude](https://mprosk.pythonanywhere.com/email?path=maildir/baughman-d/deleted_items/211.)
+- [Hi Tom](https://mprosk.pythonanywhere.com/email?path=maildir/hyatt-k/deleted_items/180)
+- [RE: What's happening?](https://mprosk.pythonanywhere.com/email?path=maildir/taylor-m/sent_items/568.)
+- [A Supportive Note](https://mprosk.pythonanywhere.com/email?path=maildir/lay-k/inbox/744.)
+- [are you there and okay?](https://mprosk.pythonanywhere.com/email?path=maildir/richey-c/personal/22.)
+- [Re: kk wish list](https://mprosk.pythonanywhere.com/email?path=maildir/rogers-b/personal/83.)
+- [I Lowered the Cornboys flag](https://mprosk.pythonanywhere.com/email?path=maildir/farmer-d/deleted_items/409.)
 
 - leads to chase:
   - maildir/lenhart-m/sent_items/504.

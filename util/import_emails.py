@@ -1,6 +1,5 @@
 import argparse
 import os
-import sqlite3
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from datetime import datetime
 from email import policy
@@ -11,44 +10,6 @@ from typing import Any, Dict, List, Tuple
 import polars as pl
 
 DATE_FORMAT_STRING = "%a, %d %b %Y %H:%M:%S %z"
-
-
-def create_database_schema(db_path: str) -> None:
-    """Create the database schema with proper indexes."""
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-
-    # Create table with schema
-    cursor.execute(
-        """
-        CREATE TABLE IF NOT EXISTS emails (
-            path TEXT PRIMARY KEY,
-            date DATETIME NOT NULL,
-            sender TEXT NOT NULL,
-            recipient TEXT NOT NULL,
-            subject TEXT NOT NULL,
-            body TEXT
-        )
-    """
-    )
-
-    # Create indexes for faster queries
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_date ON emails(date)")
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_sender ON emails(sender)")
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_recipient ON emails(recipient)")
-
-    conn.commit()
-    conn.close()
-
-
-def write_dataframe_to_database(df: pl.DataFrame, db_path: str) -> None:
-    """Create database schema and write DataFrame to SQLite database."""
-    print(f"Writing to SQLite database: {db_path}")
-    create_database_schema(db_path)
-    connection_uri = f"sqlite:///{db_path}"
-    df.write_database(
-        table_name="emails", connection=connection_uri, if_table_exists="replace"
-    )
 
 
 def scan_maildir(maildir_path: Path) -> List[str]:
@@ -196,18 +157,6 @@ def main() -> None:
         default="enron.pq",
         help="Output parquet file path (default: enron.pq)",
     )
-    parser.add_argument(
-        "--sql",
-        type=str,
-        default="enron.db",
-        help="Output SQLite database file path (default: enron.db)",
-    )
-    parser.add_argument(
-        "--load-pq",
-        type=str,
-        default=None,
-        help="Path to existing parquet file to load into SQLite database",
-    )
     default_workers = min(4, os.cpu_count() or 1)
     parser.add_argument(
         "--workers",
@@ -219,18 +168,7 @@ def main() -> None:
     args = parser.parse_args()
 
     try:
-        if args.load_pq:
-            # Load existing parquet file and convert to SQLite
-            print(f"Loading existing parquet file: {args.load_pq}")
-            df = pl.read_parquet(args.load_pq)
-            print(f"Loaded {len(df)} emails from parquet file")
-
-            write_dataframe_to_database(df, args.sql)
-
-            print("Done!")
-            return
-
-        # Normal flow: parse emails from maildir
+        # Parse emails from maildir
         maildir_path = Path(args.maildir)
 
         print(f"Scanning {maildir_path.as_posix()}...")
@@ -245,8 +183,6 @@ def main() -> None:
 
         print(f"Writing to Parquet file: {args.parquet}")
         df.write_parquet(args.parquet)
-
-        write_dataframe_to_database(df, args.sql)
 
         print("Done!")
     except KeyboardInterrupt:
