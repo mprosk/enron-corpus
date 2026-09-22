@@ -1,9 +1,11 @@
 # enron-corpus
+
 Repo of various utilities for interacting with the Enron email corpus
 
 ## Initial Setup
 
 Download the corpus tar.gz:
+
 ```
 wget https://www.cs.cmu.edu/~enron/enron_mail_20150507.tar.gz
 ```
@@ -21,6 +23,7 @@ chmod -R -w maildir/
 ```
 
 Parse the emails and store them in a Parquet file and SQL database
+
 ```
 python util/import_emails.py
 ```
@@ -28,10 +31,62 @@ python util/import_emails.py
 ## Running the viewer
 
 Flask + Parquet:
+
 ```
 python flask_app.py
 ```
 
+## Labels
+
+```
+Analyze the following email and classify it using one or more of the available labels.
+
+Respond with a JSON object containing:
+- "labels": an array of label names that apply. At least one label must be applied. Labels can only be from the list below.
+- "reasoning": a brief explanation for each label
+- "summary": a short summary of the email. Try to stick to one sentence.
+
+Format your response as valid JSON only, no additional text.
+
+The available lables are described below. Apply the label if the content of the email matches the label description.
+You may include as many or as few labels as you think are appropriate, but always apply at least one label.
+Do not apply labels that are not present in the list below.
+
+Available labels:
+"business": routine business communications, standard work emails about meetings, trading, reports, contracts, financial, documents, operations, sales, procurement, legal, hr, it, facilities, etc.
+"personal": personal emails and non-work related conversations, social messages, holiday greetings, congratulations, personal coordination, or casual chatting
+"marketing": marketing material, newsletters, advertisements, promotions, sales pitches, or commercial solicitations
+"automated": automated messages, system notifications, alerts, or other automated content from systems or bots
+"spam": spam, junk mail, or unsolicited messages that are not legitimate business or personal communications
+"racist": the email includes racist content or language, racial slurs, or discriminatory language based on race or ethnicity
+"homophobic": the email includes homophobic content or language, slurs, or discriminatory language based on sexual orientation
+"xenophobic": the email includes xenophobic content or language, or discriminatory language based on nationality or origin
+"sexist": the email includes sexist content or language, gender-based discrimination, or misogynistic language
+"funny": the email has funny or humorous content or jokes
+"email_forward": the email is an example of classic early internet viral email forward culture
+"incriminating": incriminating content or language that suggests illegal activity, fraud, or wrongdoing
+"dark": bleak, dark, sad, or depressing content or language
+"gossip": gossip or other interpersonal drama, rumors, or personal conflicts
+"office_politics": office politics, internal conflicts, power struggles, or workplace maneuvering
+"recipe": the email itself contains a recipe or cooking instructions. Not just discussing recipes or cooking, the instructions themselves are present in the email.
+"september_11": content related to the September 11, 2001 attacks or that references the attacks or their aftermath
+"enron_collapse": content related to the collapse of Enron or that references the collapse or its aftermath
+"arthur_andersen": content related to or that references the collapse of the Arthur Andersen accounting firm
+"weird": weird, strange, or unusual content, language, or tone that just sticks out as odd or out of place
+"other": other content that doesn't fit the other categories. Only apply this label if no other label is applicable.
+
+The email to be labelled is below.
+
+SUBJECT: {email_subject}
+
+{email_body}
+```
+
+
+
+```
+Session: 245,341 emails in 2h 40m 44.8s (25.44 emails/s), $37.9547 spent
+```
 
 ## Saved Emails
 
@@ -94,10 +149,10 @@ My list of weird, interesting, funny, or otherwise notable emails in the corpus
 - [Fwd: FW: Children's Books You'll NEVER See!](https://mprosk.pythonanywhere.com/email?path=maildir/lenhart-m/discussion_threads/203.)
 - [FW: ONE WEEK till Pajama Pub Crawl](https://mprosk.pythonanywhere.com/email?path=maildir/lenhart-m/all_documents/1587.)
 - [Fwd: Fw: Click on the link and see what happens](https://mprosk.pythonanywhere.com/email?path=maildir/lenhart-m/discussion_threads/361.)
-  - https://web.archive.org/web/20001018153603/http://home.att.net/~viseguy/fun.html
+  - [https://web.archive.org/web/20001018153603/http://home.att.net/~viseguy/fun.html](https://web.archive.org/web/20001018153603/http://home.att.net/~viseguy/fun.html)
 - [Re: The 9th Friday State of the Union](https://mprosk.pythonanywhere.com/email?path=maildir/lenhart-m/sent_items/51.)
 - [Re: FW: Prison Bitch Name Generator](https://mprosk.pythonanywhere.com/email?path=maildir/lenhart-m/discussion_threads/143.)
-  - https://web.archive.org/web/20040401184701/http://members.iglou.com:80/lyons/bitchGen.html
+  - [https://web.archive.org/web/20040401184701/http://members.iglou.com:80/lyons/bitchGen.html](https://web.archive.org/web/20040401184701/http://members.iglou.com:80/lyons/bitchGen.html)
 - [something groovy fr. the Dali Lama](https://mprosk.pythonanywhere.com/email?path=maildir/lenhart-m/sent_items/66.)
 - [RE: the atmosphere at this](https://mprosk.pythonanywhere.com/email?path=maildir/lenhart-m/sent_items/822.)
 - [FW: guide](https://mprosk.pythonanywhere.com/email?path=maildir/dorland-c/sent_items/364.)
@@ -108,61 +163,67 @@ My list of weird, interesting, funny, or otherwise notable emails in the corpus
 - [are you there and okay?](https://mprosk.pythonanywhere.com/email?path=maildir/richey-c/personal/22.)
 - [Re: kk wish list](https://mprosk.pythonanywhere.com/email?path=maildir/rogers-b/personal/83.)
 - [I Lowered the Cornboys flag](https://mprosk.pythonanywhere.com/email?path=maildir/farmer-d/deleted_items/409.)
-
+- [RE: Elevator Maintenance](https://mprosk.pythonanywhere.com/email?path=maildir/corman-s/inbox/archives/373)
+- [Kenron](https://mprosk.pythonanywhere.com/email?path=maildir/ring-r/personalfolder/102.)
+- [Demand Ken Lay Donate Proceeds from Enron Stock Sales](https://mprosk.pythonanywhere.com/email?path=maildir/lay-k/deleted_items/714.)
 - leads to chase:
   - maildir/lenhart-m/sent_items/504.
-    - participant: richardson@sarofim.com
-  - FROM:   matthew.lenhart@enron.com 
-    TO:    chad.landry@enron.com
+    - participant: [richardson@sarofim.com](mailto:richardson@sarofim.com)
+  - FROM:   [matthew.lenhart@enron.com](mailto:matthew.lenhart@enron.com)  
+  TO:    [chad.landry@enron.com](mailto:chad.landry@enron.com)
+
 
 
 ## Enron Collapse Timeline
 
-Source: https://www.famous-trials.com/enron/1789-chronology
+Source: [https://www.famous-trials.com/enron/1789-chronology](https://www.famous-trials.com/enron/1789-chronology)
 
-| Date                 | Event                                                        |
-| -------------------- | ------------------------------------------------------------ |
-| 1985                 | Enron is founded by Ken Lay after merging Houston Natural Gas and InterNorth. |
-| August 1, 1990       | Jeffrey Skilling assumes job as chairman and chief executive of Enron Finance. |
-| December 3, 1990     | Andy Fastow is hired by Skilling for a position in Enron's new finance business |
-| January 30, 1992     | The SEC allows Enron to use mark-to market accounting instead of traditional, accrual accounting. The new accounting system allows Enron to begin reporting fast-growing profits. |
-| 1992                 | Enron becomes the largest seller of natural gas in North America. |
+
+| Date                 | Event                                                                                                                                                                                                                                                                       |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1985                 | Enron is founded by Ken Lay after merging Houston Natural Gas and InterNorth.                                                                                                                                                                                               |
+| August 1, 1990       | Jeffrey Skilling assumes job as chairman and chief executive of Enron Finance.                                                                                                                                                                                              |
+| December 3, 1990     | Andy Fastow is hired by Skilling for a position in Enron's new finance business                                                                                                                                                                                             |
+| January 30, 1992     | The SEC allows Enron to use mark-to market accounting instead of traditional, accrual accounting. The new accounting system allows Enron to begin reporting fast-growing profits.                                                                                           |
+| 1992                 | Enron becomes the largest seller of natural gas in North America.                                                                                                                                                                                                           |
 | 1999                 | Chief Financial Officer Andy Fastow forms two limited partnerships, LJM Cayman and LJM2 for the purpose of buying Enron's poorly assets. Fastow receives an exemption from conflict-of-interest rules by the Board of Directors, thus allowing him to manage the companies. |
-| July 2000            | Enron and Blockbuster enter into a 20-year agreement to stream on-demand video entertainment. Enron claims $110 million in profits from the deal, even though the network would fail and Blockbuster withdraws from the contract. |
-| August 23, 2000      | Enron stock its an all-time price high of $90 a share.       |
-| September 6, 2000    | Andy Fastow and CAO Richard Causey meet to discuss the "Global Galactic" agreement that protects Fastow from losses in the side deals he has made for Enron with LJM. |
-| December 31, 2000    | Enron finishes the tear with its stock price up 87% to $83.13, 70 times earnings. Fortune magazine calls it the most innovative large company in the United States. |
-| March 5, 2001        | Bethany McLean publishes an article *Is Enron Overpriced?* in Fortune magazine. She writes that investors are generally clueless as to how Enron earns its reported profits. |
-| April 17, 2001       | Skilling verbally attacks an analyst who questions Enron's failure to release a balance sheet along with its earnings statements, calling the an "asshole." |
-| **August 14, 2001**  | Skilling resigns as CEO of Enron. Lay re-assumes the job as CEO. |
-| August 15, 2001      | Vice president for development at Enron, Sherron Watkins, sends an anonymous letter to Lay criticizing the company's accounting practices. In the letter she says she is worried Enron "will implode in a wave of accounting scandals." |
-| August 22, 2001      | Watkins meets with Lay and gives him a 6-page letter detailing problems with Enron's accounting practices. Lay promises to take her concerns to the company's law firm, Vinson & Ellis. |
-| September 9, 2001    | A manager of an important hedge fund says "Enron stock is trading under a cloud" as its stock price continues to fall. |
-| October 16, 2001     | Enron announces that it will have to restate its earnings from 1997 to 2000 to correct accounting violations. |
-| October 22, 2001     | The Enron Board learns that Fastow received $30 million (more, actually) from managing LJM partnerships. Enron's stock drops 20% in a day after the SEC announces that it will investigate several Enron deals. |
-| October 24, 2001     | Enron fires Andy Fastow.                                     |
-| October 30, 2001     | Credit rating agencies lower Enron's credit rating. From August through the end of October, Ken Lay has sold 918,000 shares of Enron while insisting to others the company was in good financial shape. |
-| November 2001        | In a desperate effort to save itself from bankruptcy, Enron explores merger or acquisition possibilities with rival Dynegy. |
-| November 28, 2001    | Dynegy says it will not acquire Enron. Enron's credit rating is reduced to junk status. Enron's stock price falls to $0.61. |
-| **December 2, 2001** | Enron seeks Chapter 11 bankruptcy protection.                |
-| December 2001        | Skilling tells the *New York Times* , "I had no idea that the compay was in anything but excellent shape." |
-| January 23, 2002     | Ken lay resigns as Enron's chairman and CEO.                 |
-| February 7, 2002     | Skilling testifies before about the Enron collapse before a congressional committee; Fastow invokes his 5th Amendment protection and refuses to testify. |
-| June 15, 2002        | Enron's auditing firm, Arthur Andersen, is convicted of obstruction of justice in connection with its shredding of Enron documents. |
-| July 30, 2002        | President George W. Bush signs the Sarbanes-Oxley Act imposing new accounting and reporting obligations on American businesses. |
-| August 31, 2002      | Enron accounting firm Arthur Andersen surrenders its CPA license and its 85,000 employees lose their jobs. |
-| October 31, 2002     | Andy Fastow is indicted on 78 counts of fraudulent conduct.  |
-| May 1, 2003          | Lea Fastow, the wife of Andy Fastow, is charged with conspiracy and tax evasion. |
-| January 14, 2004     | Andy Fastow enters into a plea agreement and promises to cooperate in the prosecution of other Enron executives. |
-| February 18, 2004    | A grand jury in Houston indicts Jeff Skilling on 35 counts, including charges of fraud, insider trading, and conspiracy. |
-| July 7, 2004         | A grand jury indicts Ken Lay on 11 counts, including charges of wire fraud, securities fraud, bank fraud, and conspiracy. The next day, Lay surrenders to the FBI. |
-| December 28, 2005    | Richard Causey enters into a plea bargain agreement with the government. |
-| January 30, 2006     | Jury selection begins in the trial of Lay and Skilling.      |
-| May 17, 2006         | The jury begins deliberation in the trial of Lay and Skilling. |
-| May 25, 2006         | The jury convicts Skilling of 19 of 28 counts of wire fraud and securities fraud. Lay is convicted on all six counts of fraud. |
-| July 5, 2006         | While staying in a cabin outside Aspen, Colorado with his wife, Ken Lay suffers a heart attack and dies. |
-| September 26, 2006   | Andy Fatow is sentenced to six years in prison.              |
-| October 23, 2006     | Judge Lakes sentences Skilling to 24 years in prison and sets a fine of $45 million. |
-| December 13, 2006    | Jeff Skilling begins serving his sentence in a low-security prison in Waseca, Minnesota. |
-| December 16, 2011    | Andy Fastow is released from prison.                         |
-| June 21, 2013        | Judge Lake reduces Skilling's sentence to 14 years (and, with good-time credits, he could be released by 2017). |
+| July 2000            | Enron and Blockbuster enter into a 20-year agreement to stream on-demand video entertainment. Enron claims $110 million in profits from the deal, even though the network would fail and Blockbuster withdraws from the contract.                                           |
+| August 23, 2000      | Enron stock its an all-time price high of $90 a share.                                                                                                                                                                                                                      |
+| September 6, 2000    | Andy Fastow and CAO Richard Causey meet to discuss the "Global Galactic" agreement that protects Fastow from losses in the side deals he has made for Enron with LJM.                                                                                                       |
+| December 31, 2000    | Enron finishes the tear with its stock price up 87% to $83.13, 70 times earnings. Fortune magazine calls it the most innovative large company in the United States.                                                                                                         |
+| March 5, 2001        | Bethany McLean publishes an article *Is Enron Overpriced?* in Fortune magazine. She writes that investors are generally clueless as to how Enron earns its reported profits.                                                                                                |
+| April 17, 2001       | Skilling verbally attacks an analyst who questions Enron's failure to release a balance sheet along with its earnings statements, calling the an "asshole."                                                                                                                 |
+| **August 14, 2001**  | Skilling resigns as CEO of Enron. Lay re-assumes the job as CEO.                                                                                                                                                                                                            |
+| August 15, 2001      | Vice president for development at Enron, Sherron Watkins, sends an anonymous letter to Lay criticizing the company's accounting practices. In the letter she says she is worried Enron "will implode in a wave of accounting scandals."                                     |
+| August 22, 2001      | Watkins meets with Lay and gives him a 6-page letter detailing problems with Enron's accounting practices. Lay promises to take her concerns to the company's law firm, Vinson & Ellis.                                                                                     |
+| September 9, 2001    | A manager of an important hedge fund says "Enron stock is trading under a cloud" as its stock price continues to fall.                                                                                                                                                      |
+| October 16, 2001     | Enron announces that it will have to restate its earnings from 1997 to 2000 to correct accounting violations.                                                                                                                                                               |
+| October 22, 2001     | The Enron Board learns that Fastow received $30 million (more, actually) from managing LJM partnerships. Enron's stock drops 20% in a day after the SEC announces that it will investigate several Enron deals.                                                             |
+| October 24, 2001     | Enron fires Andy Fastow.                                                                                                                                                                                                                                                    |
+| October 30, 2001     | Credit rating agencies lower Enron's credit rating. From August through the end of October, Ken Lay has sold 918,000 shares of Enron while insisting to others the company was in good financial shape.                                                                     |
+| November 2001        | In a desperate effort to save itself from bankruptcy, Enron explores merger or acquisition possibilities with rival Dynegy.                                                                                                                                                 |
+| November 28, 2001    | Dynegy says it will not acquire Enron. Enron's credit rating is reduced to junk status. Enron's stock price falls to $0.61.                                                                                                                                                 |
+| **December 2, 2001** | Enron seeks Chapter 11 bankruptcy protection.                                                                                                                                                                                                                               |
+| December 2001        | Skilling tells the *New York Times* , "I had no idea that the compay was in anything but excellent shape."                                                                                                                                                                  |
+| January 23, 2002     | Ken lay resigns as Enron's chairman and CEO.                                                                                                                                                                                                                                |
+| February 7, 2002     | Skilling testifies before about the Enron collapse before a congressional committee; Fastow invokes his 5th Amendment protection and refuses to testify.                                                                                                                    |
+| June 15, 2002        | Enron's auditing firm, Arthur Andersen, is convicted of obstruction of justice in connection with its shredding of Enron documents.                                                                                                                                         |
+| July 30, 2002        | President George W. Bush signs the Sarbanes-Oxley Act imposing new accounting and reporting obligations on American businesses.                                                                                                                                             |
+| August 31, 2002      | Enron accounting firm Arthur Andersen surrenders its CPA license and its 85,000 employees lose their jobs.                                                                                                                                                                  |
+| October 31, 2002     | Andy Fastow is indicted on 78 counts of fraudulent conduct.                                                                                                                                                                                                                 |
+| May 1, 2003          | Lea Fastow, the wife of Andy Fastow, is charged with conspiracy and tax evasion.                                                                                                                                                                                            |
+| January 14, 2004     | Andy Fastow enters into a plea agreement and promises to cooperate in the prosecution of other Enron executives.                                                                                                                                                            |
+| February 18, 2004    | A grand jury in Houston indicts Jeff Skilling on 35 counts, including charges of fraud, insider trading, and conspiracy.                                                                                                                                                    |
+| July 7, 2004         | A grand jury indicts Ken Lay on 11 counts, including charges of wire fraud, securities fraud, bank fraud, and conspiracy. The next day, Lay surrenders to the FBI.                                                                                                          |
+| December 28, 2005    | Richard Causey enters into a plea bargain agreement with the government.                                                                                                                                                                                                    |
+| January 30, 2006     | Jury selection begins in the trial of Lay and Skilling.                                                                                                                                                                                                                     |
+| May 17, 2006         | The jury begins deliberation in the trial of Lay and Skilling.                                                                                                                                                                                                              |
+| May 25, 2006         | The jury convicts Skilling of 19 of 28 counts of wire fraud and securities fraud. Lay is convicted on all six counts of fraud.                                                                                                                                              |
+| July 5, 2006         | While staying in a cabin outside Aspen, Colorado with his wife, Ken Lay suffers a heart attack and dies.                                                                                                                                                                    |
+| September 26, 2006   | Andy Fatow is sentenced to six years in prison.                                                                                                                                                                                                                             |
+| October 23, 2006     | Judge Lakes sentences Skilling to 24 years in prison and sets a fine of $45 million.                                                                                                                                                                                        |
+| December 13, 2006    | Jeff Skilling begins serving his sentence in a low-security prison in Waseca, Minnesota.                                                                                                                                                                                    |
+| December 16, 2011    | Andy Fastow is released from prison.                                                                                                                                                                                                                                        |
+| June 21, 2013        | Judge Lake reduces Skilling's sentence to 14 years (and, with good-time credits, he could be released by 2017).                                                                                                                                                             |
+
+
