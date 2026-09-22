@@ -16,8 +16,26 @@ from markupsafe import Markup
 
 app = Flask(__name__)
 
-# Configuration — expect enron_dedupe.pq (no tags) or enron_dedupe_jev.pq (jev_labels)
-PARQUET_FILE = os.environ.get("ENRON_PARQUET_FILE", "enron_dedupe.pq")
+# Configuration — prefer labeled/deduped corpora when present
+DEFAULT_PARQUET_CANDIDATES = (
+    "enron_dedupe_jev.pq",
+    "enron_dedupe.pq",
+    "enron.pq",
+)
+
+
+def resolve_parquet_file() -> str:
+    """Pick parquet path: ENRON_PARQUET_FILE, else first existing default candidate."""
+    env_path = os.environ.get("ENRON_PARQUET_FILE", "").strip()
+    if env_path:
+        return env_path
+    for candidate in DEFAULT_PARQUET_CANDIDATES:
+        if os.path.exists(candidate):
+            return candidate
+    return DEFAULT_PARQUET_CANDIDATES[0]
+
+
+PARQUET_FILE = resolve_parquet_file()
 _df_cache: Optional[pl.DataFrame] = None
 _tag_counts_cache: Optional[List[Tuple[str, int]]] = None
 

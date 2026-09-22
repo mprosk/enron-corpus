@@ -1,6 +1,8 @@
 # project specific ignores
 *.tar.gz
 *.pq
+*.json
+*.jsonl
 maildir/
 
 # OS Files
