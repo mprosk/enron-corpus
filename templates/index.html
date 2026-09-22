@@ -138,6 +138,38 @@
                             >
                         </div>
                     </div>
+                    {% if has_tags %}
+                    <div class="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-white">Content Tags:</label>
+                            <div class="flex items-center gap-2">
+                                <label for="tag_mode" class="text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">Match multiple tags with:</label>
+                                <select
+                                    id="tag_mode"
+                                    name="tag_mode"
+                                    class="px-3 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-enron-blue focus:border-enron-blue bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                                >
+                                    <option value="or" selected>OR</option>
+                                    <option value="and">AND</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            {% for tag in valid_tags %}
+                            <label class="inline-flex items-center gap-2 px-3 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-enron-blue dark:hover:border-blue-400 bg-white dark:bg-gray-700 has-[:checked]:border-enron-blue dark:has-[:checked]:border-blue-400 has-[:checked]:bg-blue-50 dark:has-[:checked]:bg-blue-900/40">
+                                <input
+                                    type="checkbox"
+                                    name="tag"
+                                    value="{{ tag }}"
+                                    class="rounded border-gray-300 dark:border-gray-500 text-enron-blue focus:ring-enron-blue"
+                                >
+                                <span class="text-sm text-gray-800 dark:text-white font-medium">{{ tag }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Only valid content tags can be selected. OR matches emails with any selected tag; AND requires all selected tags.</p>
+                    </div>
+                    {% endif %}
                     <div class="pt-2">
                         <button 
                             type="submit" 
@@ -170,6 +202,25 @@
         </div>
     </div>
 
+    {% if has_tags and tag_counts %}
+    <!-- Content Tags Browser -->
+    <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg shadow-md dark:shadow-gray-900/50 p-6">
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Content Tags</h2>
+        <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">Click a tag to search for all emails with that tag. Counts show how many emails carry each tag.</p>
+        <div class="flex flex-wrap gap-2">
+            {% for tag, count in tag_counts %}
+            <a
+                href="/search?tag={{ tag|urlencode }}"
+                class="inline-flex items-center gap-1 px-3 py-2 bg-blue-50 dark:bg-blue-900/40 border-2 border-blue-200 dark:border-blue-700 text-enron-blue dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/70 hover:border-enron-blue dark:hover:border-blue-400 transition-colors text-sm font-medium"
+            >
+                <span>{{ tag }}</span>
+                <span class="text-gray-500 dark:text-gray-400 font-normal">({{ count|intcomma }})</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Instructions -->
     <div class="bg-yellow-50 dark:bg-yellow-900/30 border-2 border-yellow-200 dark:border-yellow-800 rounded-lg p-6">
         <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">How to Use</h2>
@@ -190,9 +241,19 @@
                     <li><span class="font-medium">Body:</span> Search within email body content</li>
                     <li><span class="font-medium">Path:</span> Filter by folder path (e.g., "lay-k/sent" or "inbox")</li>
                     <li><span class="font-medium">Date Range:</span> Filter emails by date (most emails are from 1999-2003)</li>
+                    {% if has_tags %}
+                    <li><span class="font-medium">Content Tags:</span> Filter by one or more content tags using AND or OR matching</li>
+                    {% endif %}
                 </ul>
                 <p class="text-gray-700 dark:text-gray-200 mt-2">You can combine multiple fields to narrow your search.</p>
             </div>
+
+            {% if has_tags %}
+            <div>
+                <h3 class="font-semibold text-gray-800 dark:text-white mb-1">Content Tags</h3>
+                <p class="text-gray-700 dark:text-gray-200">Browse tags below the random email buttons. Each tag shows how many emails carry it. Click a tag to jump straight to matching emails.</p>
+            </div>
+            {% endif %}
             
             <div>
                 <h3 class="font-semibold text-gray-800 dark:text-white mb-1">Tips</h3>
