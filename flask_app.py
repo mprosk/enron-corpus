@@ -7,7 +7,7 @@ Features: Responsive design with Tailwind CSS, mobile-first approach
 import html
 import urllib.parse
 from datetime import datetime, timedelta, date, timezone
-from typing import List, Tuple, Optional
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 import os
 
 import polars as pl
@@ -16,9 +16,41 @@ from markupsafe import Markup
 
 app = Flask(__name__)
 
-# Configuration
-PARQUET_FILE = os.environ.get("ENRON_PARQUET_FILE", "enron.pq")
+# Configuration — expect enron_dedupe.pq (no tags) or enron_dedupe_jev.pq (jev_labels)
+PARQUET_FILE = os.environ.get("ENRON_PARQUET_FILE", "enron_dedupe.pq")
 _df_cache: Optional[pl.DataFrame] = None
+_tag_counts_cache: Optional[List[Tuple[str, int]]] = None
+
+# Canonical content tags from the Jev labeling scheme, plus the "other" fallback.
+VALID_JEV_TAGS: Tuple[str, ...] = (
+    "business",
+    "personal",
+    "marketing",
+    "automated",
+    "spam",
+    "racist",
+    "homophobic",
+    "xenophobic",
+    "sexist",
+    "funny",
+    "hostile",
+    "explicit",
+    "email_forward",
+    "incriminating",
+    "dark",
+    "morale",
+    "gossip_personal",
+    "gossip_work",
+    "office_politics",
+    "politics",
+    "recipe",
+    "september_11",
+    "enron_collapse",
+    "arthur_andersen",
+    "historical",
+    "weird",
+    "other",
+)
 
 
 def get_dataframe() -> pl.DataFrame:
@@ -33,6 +65,104 @@ def get_total_count() -> int:
     """Get total number of emails"""
     df = get_dataframe()
     return len(df)
+
+
+def has_tag_support() -> bool:
+    """Whether the loaded parquet includes Jev content tags."""
+    return "jev_labels" in get_dataframe().columns
+
+
+def get_valid_tags() -> List[str]:
+    """Return the list of tags users may select."""
+    if not has_tag_support():
+        return []
+    return list(VALID_JEV_TAGS)
+
+
+def parse_requested_tags(raw_tags: Sequence[str]) -> List[str]:
+    """Keep only valid tags from request input, preserving order and uniqueness."""
+    valid = set(get_valid_tags())
+    seen = set()
+    tags: List[str] = []
+    for tag in raw_tags:
+        tag = (tag or "").strip()
+        if tag in valid and tag not in seen:
+            seen.add(tag)
+            tags.append(tag)
+    return tags
+
+
+def get_tag_counts() -> List[Tuple[str, int]]:
+    """Return (tag, email_count) pairs for the tag browser, sorted by count desc."""
+    global _tag_counts_cache
+    if _tag_counts_cache is not None:
+        return _tag_counts_cache
+
+    if not has_tag_support():
+        _tag_counts_cache = []
+        return _tag_counts_cache
+
+    df = get_dataframe()
+    counts_df = (
+        df.select(pl.col("jev_labels").explode().alias("tag"))
+        .drop_nulls()
+        .group_by("tag")
+        .len()
+        .sort("len", descending=True)
+    )
+
+    valid = set(VALID_JEV_TAGS)
+    counts: List[Tuple[str, int]] = []
+    for row in counts_df.iter_rows(named=True):
+        tag = row["tag"]
+        if tag in valid:
+            counts.append((tag, int(row["len"])))
+
+    # Include valid tags with zero count so the browser shows the full set
+    present = {tag for tag, _ in counts}
+    for tag in VALID_JEV_TAGS:
+        if tag not in present:
+            counts.append((tag, 0))
+
+    _tag_counts_cache = counts
+    return _tag_counts_cache
+
+
+def extract_row_tags(row: Dict[str, Any]) -> List[str]:
+    """Extract applied tags from a named row dict."""
+    if "jev_labels" not in row:
+        return []
+    tags = row.get("jev_labels") or []
+    return [t for t in tags if t]
+
+
+def extract_tag_scores(row: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Extract all per-tag confidence scores, sorted by score descending."""
+    scores: List[Dict[str, Any]] = []
+    for key, value in row.items():
+        if not key.startswith("jev_probability_"):
+            continue
+        tag = key[len("jev_probability_") :]
+        if value is None:
+            continue
+        try:
+            score = float(value)
+        except (TypeError, ValueError):
+            continue
+        scores.append({"tag": tag, "score": score})
+    scores.sort(key=lambda item: item["score"], reverse=True)
+    return scores
+
+
+def format_result_date(date_val: Any) -> Optional[str]:
+    """Format a date value for search result list display."""
+    if not date_val:
+        return None
+    if isinstance(date_val, datetime):
+        adjusted_date = date_val - timedelta(hours=5)
+        return adjusted_date.strftime("%Y-%m-%d")
+    date_str = str(date_val)
+    return date_str.split()[0] if " " in date_str else date_str
 
 
 @app.template_filter('intcomma')
@@ -65,7 +195,14 @@ def favicon():
 def index():
     """Serve the main search page"""
     total_count = get_total_count()
-    return render_template("index.html", total_count=total_count)
+    tag_counts = get_tag_counts() if has_tag_support() else []
+    return render_template(
+        "index.html",
+        total_count=total_count,
+        has_tags=has_tag_support(),
+        valid_tags=get_valid_tags(),
+        tag_counts=tag_counts,
+    )
 
 
 @app.route("/search")
@@ -81,14 +218,22 @@ def search():
     path_search = request.args.get("path", "").strip()
     start_date = request.args.get("start_date", "").strip()
     end_date = request.args.get("end_date", "").strip()
+    tags = parse_requested_tags(request.args.getlist("tag"))
+    tag_mode = request.args.get("tag_mode", "or").strip().lower()
+    if tag_mode not in ("and", "or"):
+        tag_mode = "or"
 
     # Check if at least one search criterion is provided
-    if not any([search_query, sender, recipient, participant, subject, body, path_search, start_date, end_date]):
+    if not any([
+        search_query, sender, recipient, participant, subject, body,
+        path_search, start_date, end_date, tags,
+    ]):
         return redirect(url_for("index"))
 
     # Perform search
     results, total_count = search_emails(
-        search_query, sender, recipient, participant, subject, body, path_search, start_date, end_date
+        search_query, sender, recipient, participant, subject, body,
+        path_search, start_date, end_date, tags, tag_mode,
     )
 
     # Build search criteria display text (Jinja2 will auto-escape, so we don't escape here)
@@ -113,6 +258,9 @@ def search():
         criteria_parts.append(f"Date: from {start_date}")
     elif end_date:
         criteria_parts.append(f"Date: until {end_date}")
+    if tags:
+        joiner = f" {tag_mode.upper()} "
+        criteria_parts.append(f'Tags: {joiner.join(tags)}')
 
     search_criteria_text = " | ".join(criteria_parts)
 
@@ -126,7 +274,8 @@ def search():
         "search_results.html",
         results=results,
         search_criteria_text=search_criteria_text,
-        count_text=count_text
+        count_text=count_text,
+        has_tags=has_tag_support(),
     )
 
 
@@ -150,7 +299,14 @@ def email():
     if email_data is None:
         return "Email not found", 404
 
-    path, email_date, email_subject, email_sender, email_recipient, email_body = email_data
+    path = email_data["path"]
+    email_date = email_data["date"]
+    email_subject = email_data["subject"]
+    email_sender = email_data["sender"]
+    email_recipient = email_data["recipient"]
+    email_body = email_data["body"]
+    tags = email_data["tags"]
+    tag_scores = email_data["tag_scores"]
 
     # Format values for template (Jinja2 will auto-escape, so we don't escape here)
     if email_date:
@@ -229,7 +385,10 @@ def email():
         body_content_original=body_content_original,
         body_content_formatted=body_content_formatted,
         from_search=from_search,
-        random_type=random_type
+        random_type=random_type,
+        tags=tags,
+        tag_scores=tag_scores,
+        has_tag_scores=bool(tag_scores),
     )
 
 
@@ -270,9 +429,12 @@ def search_emails(
     path_search: str = "",
     start_date: str = "",
     end_date: str = "",
-) -> Tuple[List[Tuple], int]:
+    tags: Optional[List[str]] = None,
+    tag_mode: str = "or",
+) -> Tuple[List[Dict[str, Any]], int]:
     """Search emails in the parquet file with field-specific or general search"""
     df = get_dataframe()
+    tags = tags or []
 
     # Build filters
     filters = []
@@ -324,6 +486,17 @@ def search_emails(
         end_datetime = datetime.combine(end_dt, datetime.min.time(), tzinfo=timezone.utc)
         filters.append(pl.col("date") < end_datetime)
 
+    # Tag filtering (jev_labels only)
+    if tags and has_tag_support():
+        if tag_mode == "and":
+            for tag in tags:
+                filters.append(pl.col("jev_labels").list.contains(tag))
+        else:
+            tag_filter = pl.col("jev_labels").list.contains(tags[0])
+            for tag in tags[1:]:
+                tag_filter = tag_filter | pl.col("jev_labels").list.contains(tag)
+            filters.append(tag_filter)
+
     # Apply all filters
     if filters:
         combined_filter = filters[0]
@@ -343,30 +516,24 @@ def search_emails(
     # Sort again by date descending to ensure newest emails are first, then limit to 1000 results
     results_df = deduplicated_df.sort("date", descending=True).head(1000)
     
-    # Convert to list of tuples matching the original format
-    # Column order: path, date, subject, sender, recipient, body
-    # Format dates as strings for template rendering
-    results = []
+    # Convert to list of dicts for template rendering
+    results: List[Dict[str, Any]] = []
     
-    for row in results_df.iter_rows(named=False):
-        date_val = row[1]
-        if date_val:
-            # Format datetime to show only date part
-            if isinstance(date_val, datetime):
-                # Subtract 5 hours for timezone adjustment before formatting date
-                adjusted_date = date_val - timedelta(hours=5)
-                date_str = adjusted_date.strftime("%Y-%m-%d")
-            else:
-                date_str = str(date_val).split()[0] if " " in str(date_val) else str(date_val)
-        else:
-            date_str = None
-        
-        results.append((row[0], date_str, row[2], row[3], row[4], row[5]))  # path, date, subject, sender, recipient, body
+    for row in results_df.iter_rows(named=True):
+        results.append({
+            "path": row["path"],
+            "date": format_result_date(row["date"]),
+            "subject": row["subject"],
+            "sender": row["sender"],
+            "recipient": row["recipient"],
+            "body": row["body"],
+            "tags": extract_row_tags(row),
+        })
 
     return results, total_count
 
 
-def get_email(path: str) -> Optional[Tuple]:
+def get_email(path: str) -> Optional[Dict[str, Any]]:
     """Get a single email by path"""
     df = get_dataframe()
     result = df.filter(pl.col("path") == path)
@@ -374,8 +541,17 @@ def get_email(path: str) -> Optional[Tuple]:
     if len(result) == 0:
         return None
 
-    row = result.row(0, named=False)
-    return (row[0], row[1], row[2], row[3], row[4], row[5])  # path, date, subject, sender, recipient, body
+    row = result.row(0, named=True)
+    return {
+        "path": row["path"],
+        "date": row["date"],
+        "subject": row["subject"],
+        "sender": row["sender"],
+        "recipient": row["recipient"],
+        "body": row["body"],
+        "tags": extract_row_tags(row),
+        "tag_scores": extract_tag_scores(row),
+    }
 
 
 def get_random_email() -> Optional[Tuple]:
@@ -410,4 +586,3 @@ def get_random_today_email() -> Optional[Tuple]:
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=8000)
-
