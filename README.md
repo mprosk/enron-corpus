@@ -82,11 +82,11 @@ SUBJECT: {email_subject}
 {email_body}
 ```
 
-
-
 ```
 Session: 245,341 emails in 2h 40m 44.8s (25.44 emails/s), $37.9547 spent
 ```
+
+
 
 ## Saved Emails
 
@@ -166,6 +166,7 @@ My list of weird, interesting, funny, or otherwise notable emails in the corpus
 - [RE: Elevator Maintenance](https://mprosk.pythonanywhere.com/email?path=maildir/corman-s/inbox/archives/373)
 - [Kenron](https://mprosk.pythonanywhere.com/email?path=maildir/ring-r/personalfolder/102.)
 - [Demand Ken Lay Donate Proceeds from Enron Stock Sales](https://mprosk.pythonanywhere.com/email?path=maildir/lay-k/deleted_items/714.)
+- [FW: Accounting](http:///mprosk.pythonanywhere.com/email?path=maildir/parks-j/deleted_items/389)
 - leads to chase:
   - maildir/lenhart-m/sent_items/504.
     - participant: [richardson@sarofim.com](mailto:richardson@sarofim.com)
