@@ -168,3 +168,14 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 .idea/
+
+# Language model data and training runs
+lm/data/
+lm/runs/*
+!lm/runs/overnight.sh
+# keep the final small and medium models (weights via git lfs), minus optimizer state
+!lm/runs/small/
+!lm/runs/medium/
+!lm/runs/small/*.json
+!lm/runs/medium/*.json
+lm/runs/*/optimizer.safetensors
