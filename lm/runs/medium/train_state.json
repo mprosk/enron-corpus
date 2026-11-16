@@ -1,0 +1,23 @@
+{
+  "step": 14648,
+  "args": {
+    "name": "medium",
+    "preset": "medium",
+    "context": 1024,
+    "batch_size": 8,
+    "grad_accum": 2,
+    "tokens": 240000000.0,
+    "lr": 0.0006,
+    "min_lr_frac": 0.1,
+    "warmup_steps": 200,
+    "weight_decay": 0.1,
+    "eval_every": 250,
+    "eval_batches": 20,
+    "sample_every": 1000,
+    "ckpt_every": 1000,
+    "log_every": 25,
+    "max_steps": null,
+    "seed": 1337,
+    "resume": false
+  }
+}

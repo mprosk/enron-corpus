@@ -1,0 +1,4 @@
+{
+  "bos_token": "<|email|>",
+  "eos_token": "<|end|>"
+}

@@ -1,0 +1,13 @@
+{
+  "tokenizer_class": "PreTrainedTokenizerFast",
+  "bos_token": "<|email|>",
+  "eos_token": "<|end|>",
+  "additional_special_tokens": [
+    "<|subject|>",
+    "<|from|>",
+    "<|to|>",
+    "<|body|>"
+  ],
+  "model_max_length": 1024,
+  "clean_up_tokenization_spaces": false
+}
