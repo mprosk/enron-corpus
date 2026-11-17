@@ -1,0 +1,531 @@
+
+============================== step 0 ==============================
+
+Subject: Re: holiday party
+From: "Shelly B. Diaz"
+Date: 09 Sep 95 22:51:58 PDT
+I don't know about the families there for any holiday party. As far as I know, the 
+family that I had was single. 
+Also, the holidays are part of the natural order of things. 
+OK, I can't make any promises here. I'm not going on the other side 
+of the decision to celebrate, and I'm not going to judge anyone by what I 
+say. I just wanted to point out that this is what I did when my 
+parents were celebrating the holidays. 
+I don't often remember celebrating any holiday, but I do remember that my 
+grandparents celebrated the holidays with me. I hope that is what you were 
+going to say. I'm not sure what your family did. Perhaps they had a 
+particular favorite time of year to celebrate.
+----------------------------------------
+
+Subject: California
+From: "Kathryn (Wilcox) Heller" <whilcox@posteo.net>
+Newsgroups: sci.crypt
+Subject: Re: Why is the 1970s more resilient?
+Date: Tue, 26 Aug 1996 02:22:20 -0400 (EDT)
+Organization: UCLA
+Lines: 64
+Message-ID: <6917q1$42$@134.56.43.25>
+Message-Id: <199608241222.H42387@134.56.43.25>
+Organization: UCLA
+X-Original-To: posteo@posteo.net
+X-Mailer: Invert Software [http://www.invert.com/]
+X-Popularity: 0
+X-Popularity: 0
+X-Popularity: 0
+X-Popularity: 0
+X-Popularity: 0
+X-Popularity: 0
+X-Popularity: 0
+X-Popularity: 0
+X-Popularity: 0
+X-Popularity: 0
+X-Popularity: 0
+X-Popularity: 0
+X-Popularity: 0
+X-Popularity: 0
+X-Popularity: 0
+----------------------------------------
+
+Subject: URGENT: document retention
+From: Byron More (byronmore_at_yahoo.com)
+Date: Tue Dec 19 2004 - 17:22:23 EST
+
+Hi all,
+
+I have a document in my account that is too large for me to archive. It is a 8.5"x11" file with 34,002 pages. I want to delete the entire document so I can send it to my archiving person.
+
+However, the system will not delete the file. I have tried the following:
+
+- go to "My Documents" and "My Files" and "Recycle Bin" and "Trash" and go back to the "Files" tab
+- right click on the file and go to "Delete"
+- go to "File" and "Delete" and select the file
+
+All of these options will not delete the file completely. But at least it will remove the file. The system *does* delete the file. I am able to locate the file and copy it into the archive folder. And then, I can delete the file.
+
+However, I want to delete the entire document. Can anyone tell me how to delete the entire document and not just the file?
+
+Thank you very much,
+byron More
+
+Re: URGENT: document retention
+
+In a word, there is no word. If you want to delete a document and not just a file you can do it by going to the My Documents folder,
+----------------------------------------
+
+Subject: the ghosts on the trading floor
+From: James Collins
+Date: 2014.03.25.12:55:59 PST
+The ghosts on the trading floor As I've said before, I'm not interested in ghosts, but you'd be surprised how many people on the trading floor have been caught on video with ghosts hanging around them. In fact, there's cases like this around the world where people who have been caught on video by ghosts have been found to have been in the room at the exact time the video was taken. Watch this video with your friends and see if you can spot any of these ghosts in your home.
+Notice this man on the trading floor!
+On the trading floor, we have many ghosts. I've seen others, too, but I've never seen the ghosts on the trading floor. So, I'll take it up with the lucky victim. But, no matter what you do, I'd say something like this: "You've got to leave the hotel now. I'm looking for your next victim."
+See if you can find another culprit.
+----------------------------------------
+
+Subject: centos防火墙无法访问的详细信息
+CentOS防火墙无法访问的详细信息通常涉及防火墙配置文件、日志文件以及其他相关的防火墙信息。以下是一些可能的原因和相应的解决方案：
+
+### 基本信息
+1. **防火墙版本**：确保你的防火墙是最新版本。
+2. **IP地址和端口**：检查当前连接的IP地址和端口号是否正确。
+3. **系统日志**：查看系统日志文件以获取更多信息。
+
+### 检查防火墙配置
+1. **修改/删除规则**：检查防火墙规则是否正确配置，是否存在过时或错误的规则。
+   - 打开防火墙配置文件：
+     ```bash
+     sudo systemctl stop sysv-irc
+     ```
+   - 修改防火墙规则：
+     - **允许从所有IP访问**：
+       ```bash
+       sudo firewall-cmd --permanent --add-rich-rule='rule family=ipv4' \
+       'proto=icmp' \
+       'destination-port=25'
+       ```
+     - **允许所有远程主机访问**：
+       ```bash
+       sudo firewall-cmd --permanent --add-rich-rule='rule family=ipv4' \
+       'proto=udp' \
+       'destination-port=3306'
+       ```
+
+2. **检查开放的端口**：
+   - 使用`netstat`或`ss`命令检查当前系统
+----------------------------------------
+
+============================== step 500 ==============================
+
+Subject: Re: holiday party
+From: andy.zipper@enron.com
+To: shelley.corman@enron.com
+
+Friday, Dec 2nd $125 and Sunday, Dec 4th $125
+
+
+Shelley Corman
+12/09/2000 11:56 AM
+To: Andy Zipper/Corp/Enron@ENRON
+cc:
+
+Subject: Holiday party
+
+Andy.....is there something you guys are up to this week which you might enjoy? Three of us would be very happy if it was a holiday and you might like to invite anyone you know would enjoy the party. There is a lot going on tonight.
+
+If you want to meet us in Houston you could say Friday, Nov 25th at 2:00 pm in your office or if you want to meet us in Dallas you could say Friday, Dec. 2nd at 2:00 pm in your office or at 2:00 pm Skadden office.
+
+Let me know and if you think of anyone else I am sure there will be some.
+
+Shelley
+
+----------------------------------------
+
+Subject: California
+From: l..@enron.com
+To: cynthia.stark@enron.com, larry.pardillo@enron.com, mark.knippa@enron.com, clement.lucci@enron.com, m..love@enron.com, ...
+
+Please let me know if you have any questions about any of the above.
+Thanks,
+
+Joe
+
+----------------------------------------
+
+Subject: URGENT: document retention
+From: enron.announcements@enron.com
+To: all.worldwide@enron.com
+
+Should you have received this email in error, please read the following:
+
+If you do not wish to receive any future e-mail from Enron Corp., please visit the Corporate Change Control web site at http://ci.corp.enron.com and follow the instructions in the event outline.
+
+----------------------------------------
+
+Subject: the ghosts on the trading floor
+From: edirectnetwork@enron.com
+To: bradley.holmes@enron.com
+
+Dear EDIRECTNETWORK MEMBER:
+
+This email is designed to inform you that ENETEX has been awarded the ISO and ERCOT regions on its own. This is a very exciting opportunity for ENETEX. It is thankfull for our continued support of ENETEX along with all our other members.
+
+If you have any questions about ENETEX or the process, please contact the ENETEX Call Centre on 0207 78652821 or online at www.e-netex.com.
+
+Thank you again for all your hard work.
+
+
+Regards,
+ENETEX
+
+----------------------------------------
+
+Subject: FW: notifies of industrial fired oil fired power plant in US and Canada
+From: karen.denne@enron.com
+To: dennis.alters@enron.com, geoff.storey@enron.com, david.delainey@enron.com
+
+-----Original Message-----
+From: Roslyn, Ian
+Sent: Wed 11/17/2001 11:09 AM
+To: Arnold, John; Bradford, William S.; Delainey, David; Donohoe, Tom; Evans, Casey; Goodman, DeBorah; Huddleson, Diann; Jacobson, Gary; Kroll, Heather; Kuehl, Toby; Linsey, Mark; Lohman, TK; Meyers, Julie; Mulligan, Amy; Ward, Linda; Lot, Ben; Lees, Lisa; Blair, Lynn; Clark, Michelle; Conwell, Wendy; Cisneros, Celeste; Czahar, Gerry; Davidson, Joe; Counihan, John; Delaney Hunter, Sharen; Dupre, Suzanne; Fossum, Drew; Gilbert-Smith, Chris; Greaney, Chris; Grigsby, Mike; Hare, Bill D.; McCarty, Danny; McDaniel, Janet; McMichael Jr., Ed; Miller, Jeffrey; Miller, Michael A.; Mulligan, Amy; Ward, Linda; Will, Lloyd; Spiller, Bob
+----------------------------------------
+
+============================== step 1,000 ==============================
+
+Subject: Re: holiday party
+From: m..driscoll@enron.com
+To: robert'.'bertinston@enron.com, lindy.donoho@enron.com, steven.harris@enron.com, michelle.lokay@enron.com, mark.mcconnell@enron.com, ...
+
+Lindy and I are going to be at your place. I will be leaving at about 4:00 pm. I will drive to your place and drop you at 5:00 pm.
+
+-Mike
+----- Forwarded by Mike McConnell/HOU/ECT on 11/29/2000 06:13 AM -----
+
+
+Mike McConnell
+11/27/2000 06:12 PM
+To: Robert Ebertinston/Enron@EnronXGate, Lindy Donoho/ET&S/Enron@ENRON, Steven Harris/NA/Enron@Enron, Michelle Lokay/ET&S/Enron@Enron, Mark McConnell/HOU/ECT@ECT, Christine Stokes/ENRON@enronXgate, Susan Scott/ENRON@enronXgate, Steve January/ENRON@enronXgate, Susan Scott/ENRON@enronXgate, John Dushinske/ENRON@enronXgate, Keith Petersen/HOU/ECT@ECT, Veronica Gonzalez/HOU/ECT@ECT, Mike J Miller
+----------------------------------------
+
+Subject: California
+From: j..kean@enron.com
+To: rob.bradley@enron.com
+
+---------------------- Forwarded by Jeff Dasovich/NA/Enron on 07/04/2001 01:35 PM ---------------------------
+
+	Enron Capital & Trade Resources Corp.
+
+	From: Jeff Dasovich 06/27/2001 11:35 AM
+
+
+Sent by: Jeff Dasovich
+To: 'don@eslawfirm.com'
+cc:
+
+Subject: California
+
+Dave's title is--do I have a Swedish?
+---------------------- Forwarded by Jeff Dasovich/NA/Enron on 06/27/2001 11:35 AM ---------------------------
+
+
+Jeff Dasovich
+06/27/2001 11:28 AM
+To: Rob Bradley/Corp/Enron@ENRON
+cc:
+
+Subject: California
+
+Rob:
+
+I am well aware that there are some obviously underlying issues that we just need to discuss more in advance than in the press. I am trying to figure out the source of the state's problems and the source of the Davis policies that have been cooked up around the world. I am not here to write the press. I am here to get the facts. I hope we can come up with a general strategy that we can pursue in the media, but I want to think about the policy solutions before I
+----------------------------------------
+
+Subject: URGENT: document retention
+From: enron.announcements@enron.com
+To: all.worldwide@enron.com
+
+******************************************************************
+To ensure that your computer does not delete any important information, we are asking that you delete all unneeded e-mail and mail messages from your computer. You must also click on the following links, located near the bottom of the screen, to delete the information from Lotus Notes:
+
+In Lotus Notes, the Information Admin OPTION
+From the link above, select the "Information Admin" title. Then select the "Request for Unneeded Information" option. This will allow you to delete your most important information on a consistent basis. Please note that you will continue to be able to access and use your Lotus Notes email and calendar, even after you have removed your UNDO NOT DELETE message. If you have any questions, please call us at 713-853-9090.
+******************************************************************
+
+Your help is greatly appreciated! To ensure a continued successful operation of the system, we need you to be an active participant in it. Please reply to this email, with the subject line "Your cooperation is requested." Please leave a voice mail at (713) 853-9090 and email back to enron. Thank you for your continued support of the group.
+
+NOTE: If you are not a regular user of Lotus Notes, you may not be able to delete unneeded information, therefore, be sure to keep your computer systems updated with the
+----------------------------------------
+
+Subject: the ghosts on the trading floor
+From: karen.buckley@enron.com
+To: j.kaminski@enron.com
+
+Vince,
+
+Effective Thursday, I am going to move to Houston. I will be happy to stay in Austin. Let me know when you are free.
+
+Thanks,
+Karen
+
+----------------------------------------
+
+Subject: Centre for Metals and Paper Trading
+
+Dear All,
+
+In this morning's meeting, it was mentioned that the Centre is likely to open a financial open-season on steel, in the next 2-3 weeks.
+
+There are presently several proposals for opening a financial open-season in metals. The Centre has held an open-season in paper and pulp for 7-8 months. There were two proposals: the National Steel Centre and the Maharashtra Subsidiary of the International Paper Exchange. The latter has been very attractive because the deadline for applying for the open season is 30 days. The first, the National Steel Centre, has applied for the open season.
+
+Concerning the Centre, it is not surprising that the Centre has opened a financial open-season. The open season is intended to remove barriers to entry for interested secondary schools in the country. The schools are allowed to open up the open season only for schools with a high concentration of students and a high standard of education, with 1,500,000 school-going students being eligible. The secondary schools are, for theots of ten years or below, more researcher hype than a true curriculum. This may well settle the issue of quality education and also help the educational needs of the schools. The open season will be held for the financial season. The first financial open season is scheduled to begin on 15th July and the second is targeted for 18th July. The open season will be from 12
+----------------------------------------
+
+============================== step 1,500 ==============================
+
+Subject: Re: holiday party
+From: m..scott@enron.com
+To: shelleybaker@aec.ca
+
+We'll be there Sunday night because we have to come out on Friday night or Saturday morning so we will hold off the holiday party. I'll let you know if we decide to go ahead. I'd love to join you guys. If there's any particular time that you would like to get together let me know. I usually get in your offices by 5:45 p.m. and then I leave around 8:00 p.m. Does this work for you?
+
+ -----Original Message-----
+ From: 	"Melinda Baker" <shelleybaker@aec.ca>@ENRON
+ Sent:	Wednesday, November 27, 2001 2:42 PM
+ To:	Scott, Susan M.
+ Subject:	holiday party
+
+I have invited you to the Holiday Party on Friday November 29th at the River Oaks Cafe. I am inviting you and your guests to join us for a celebration of holiday season. We will have drinks and food. I have reserved a table for you and your guests. Find out more about the event at:
+
+http://www.aec.ca.gov
+
+Let me know if you are interested in joining us for this event and if I can be of further assistance to you.
+
+Thanks again for your invitation.
+
+----------------------------------------
+
+Subject: California
+From: j..kean@enron.com
+To: david.delainey@enron.com
+
+This is going to be very difficult. We have a lot to do, but we have a lot of leverage.
+----- Forwarded by Mark Koenig/Corp/Enron on 03/01/2001 08:55 AM -----
+
+	Mark Koenig
+	03/01/2001 08:50 AM
+
+		 To: David W Delainey/HOU/ECT@ECT
+		 cc: Paula Rieker/Corp/Enron@ENRON, Alan Comnes/PDX/ECT@ECT, John
+	Tadams/HOU/ECT@ECT, Vice President and General Counsel, Enron@ENRON, Jeff Skilling/Corp/Enron@ENRON, Mark Koenig/Corp/Enron@ENRON
+		 Subject: California
+
+	Please note this is the final presentation from Mark Koenig, Greg Whalley, Dave Delainey and Beth Wapner on the California situation.
+
+	Please let me know if you have any questions.
+
+	Mark Koenig
+	03/01/2001 08:45 AM
+	Please respond to Mark Koenig
+
+		 To: David W Delainey/HOU/ECT@ECT, Paula Rieker/Corp/Enron@EN
+----------------------------------------
+
+Subject: URGENT: document retention
+From: jeffrey.hodge@enron.com
+To: sarah.bailey@enron.com
+
+Sara:
+
+This document was originally created as a part of the ENA Legal Department files in the document retention and destruction policy. As part of our many efforts over the past years to protect confidential and proprietary information, we have been managing the document retention and destruction policyacey upon request. However, we are facing an urgent need for document destruction to comply with a new Federal Regulatory Authority (FRA) requirement.
+
+The FRA has recently been issued by the FERC to all energy transmission companies, which would require our document destruction policy to remain current. Furthermore, it is apparent that the FRA has recently been implemented by the Federal Energy Regulatory Commission (FERC) for its own energy transmission system. In response to the FRA, the FERC has recently determined that it would require the dissemination of sensitive information contained within the Energy Transmission System, which would in turn require the destruction of any and all electronic or paper files that contain any information relating to the Transmission System. Further, the FERC has also recently implemented a more aggressive requirement that the Energy Transmission System must be destroyed within 48 hours of issuance of the FRA.
+
+As such, we are now requesting that you destroy all electronic and paper files that contain any information relating to the Energy Transmission System within the next 48 hours. In addition, all Southern and AEP internal e-mail relevant to the Energy Transmission System must be
+----------------------------------------
+
+Subject: the ghosts on the trading floor
+From: stephanie.panus@enron.com
+To: elizabeth.sager@enron.com
+
+----- Forwarded by Stephanie Panus/NA/Enron on 03/21/2001 08:01 AM -----
+
+	Stephanie Panus
+	03/21/2001 09:29 AM
+
+		 To: Bob Bowen/HOU/ECT@ECT, Mary Cook/HOU/ECT@ECT, Barton
+	Cardoso/Corp/Enron@ENRON, Bob Carter/HOU/ECT@ECT, Melinda Whalen/CAL/ECT@ECT, Cynthia Sandherr/Corp/Enron@ENRON, Deb Korkmas/HOU/ECT@ECT, Suzanne Adams/HOU/ECT@ECT, Stephanie Panus/NA/Enron@Enron, Sara Shackleton/HOU/ECT@ECT, Susan Bailey/HOU/ECT@ECT, Susan Flynn/HOU/ECT@ECT, Sharon Crawford/CAL/ECT@ECT
+		 cc:
+		 Subject: the ghosts on the trading floor
+
+Fax from Carol St. Clair on the EOL issue of showing potential settlements to the counterparty who has long since declared bankruptcy.
+----- Forwarded by Stephanie Panus/NA/Enron on 03/21/2001 09:27 AM -----
+
+	Mary Cook
+	03/20/
+----------------------------------------
+
+Subject: combines
+
+----------------------------------------
+
+============================== step 2,000 ==============================
+
+Subject: Re: holiday party
+From: dana.davis@enron.com
+To: kdavis2077@aol.com
+
+I would suggest doing what you do every day for the week of December 3rd (with that extra day added on the 4th and 5th), I am committed to this activity for the whole week.
+
+I am afraid if I tell you I can not do it. Does it make you feel better?
+
+
+	KDavis2077@aol.com
+	11/29/2000 01:50 PM
+
+		 To: Dana.Davis@enron.com
+		 cc:
+		 Subject: Re: holiday party
+
+
+ Davan,
+ Can I add you to our party?
+......Hey, how about I add you to this one too?
+-I'm not sure what time I'm going to be home, but I'll throw
+it
+at you.
+You should stop by this place sometime, I'll be there.
+Thanks,
+My love,
+Katie
+
+----------------------------------------
+
+Subject: California
+From: l..nicolay@enron.com
+To: lisa.mellencamp@enron.com
+
+Lisa, here is the latest on the California water issue. The CPUC and the Wood Commissioners were not available on Friday, but have been available on Tuesdays. We are being asked to try to work a deal with the Department of Water Resources on Friday. We should be able to get some money in place if there is a deal. We should be able to get a further "head start" if we can find a deal with the DWR. We are still in the process of discussing the "wording" with the governor, but are hopeful that we can all agree on the " basics" of the deal. Once we have all of the details worked out, we will be able to get a better idea of the "price tag" and how it might be spread out over the next 5 years. I'll let you know more when I receive more information.
+
+Matthew
+
+----------------------------------------
+
+Subject: URGENT: document retention
+From: partickson@velaw.com
+To: rick.buy@enron.com, mary.fischer@enron.com, george.wasaff@enron.com, peggy.determeyer@enron.com, richard.ring@enron.com, ...
+
+Michael L. Tully has just accepted the position of senior vice president, general counsel under counsel of the Texas Division of the Securities and Exchange Commission.
+
+Company: Enron North America, Corp.
+ RC# 0000100031
+ Employee# 001033028
+ Effective Date: June 14, 2001
+ Last day of employment: June 14, 2001
+
+
+This document would be helpful in the process of delivering the final document if you are asked to handle the document retention. Please forward the enclosed document to me upon receipt. Thank you. (See attached file: EnronRecover.doc) - EnronRecover.doc
+
+----------------------------------------
+
+Subject: the ghosts on the trading floor
+From: karen.buckley@enron.com
+To: beth.apollo@enron.com, sally.beck@enron.com, mary.solmonson@enron.com, w..white@enron.com, louise.kitchen@enron.com, ...
+
+Dear All,
+
+This is a short summary of an interesting article on the ghost traders at Goldman Sachs.
+
+ Rubin and Gorte are former friends from University of Pennsylvania and worked together in a well functioning investment fund in the late 90s. They had a funny discussion about why the fund did not like to invest in foreign equities (or derivatives in particular).
+
+ In the fund's world-wide investments, the members saw the film of Gorte and a guy who looked like someone from the US government (who was apparently an investment banker at the fund) and asked if they could invest in some European equities. This was done by the fund, which had invested in some US equities very heavily.
+
+ Their response was that they had not agreed to invest in European equities as they were not entirely sophisticated and therefore they did not want to invest in such a risky environment.
+
+ They went on to compare to the current situation of the investment banks where the world capital market has become completely risk free and clients are not taking any other risk. These two groups are very different, and it is not surprising that they have developed similar policies.
+
+ I know that you are quite busy with your current job and do not wish to read the
+----------------------------------------
+
+Subject: FW: Proposed New Resources for the Future
+From: lynn.blair@enron.com
+To: courtney.barker@enron.com
+
+ -----Original Message-----
+ From: 	Thomas, Jake
+ Sent:	Wednesday, May 07, 2001 3:50 PM
+ To:	Abdmoulaie, Mansoor; Amador, Susan; Anderson, Ruth; Asante, Ben; Benner, Martha; Berryman, Ken; Blair, Lynn; Boatman, Jack; Brown, Sharon; Brown, William;Carr, James; Carter, Zuela; Cessac, Kenneth;Clapper, Karen; Cohrs, Allen;"Cocke Jr., Frazier" <Frazier.Cocke@ENRON.com>; Collins, Marion; Cordes, Bill; Corman, Shelley; Corless, Gary; Cramer, James; Cutsforth, Diane; Cutsforth, Diane; Dyer, Terri; Dyer, Laird; Dietz, Rick; Dornan, Dari; Dushinske, John; Dyer, Laird; Duffy, Matthew; Elrod, Robert; Elrod, Brant; Eubanks Jr., David; Ewing, Linda J.; Frazier, Perry; Gallup, Jerry; Gallegos, Jim; Gahn, Scott; Gileau, Patrick; Good, Chuck; Good, Chuck; Gos
+----------------------------------------
+
+============================== step 2,487 ==============================
+
+Subject: Re: holiday party
+From: darron.giron@enron.com
+To: kristi.giron@cfisd.net
+
+I would bring some Easter basket of Easter Robinson's. I don't think people understand how bad Easter takes a toll on us. That's why I don't bring it up anymore. I guess you could bring some Easter relish mix.
+
+DG
+
+
+"Kristi Giron" < kristi.giron@cfisd.net> on 04/19/2001 09:29:08 AM
+To:	"DEVELOP THE STUDENTS" < INCLUDE@TMSINC.COM>, "DEB KAPLAN" <dkaplan@northgrumman.com>, "DAVID ANDERSON" <DDA1@pge.com>, "DAVID BUSH" <DBUSH@PROLYONS.COM>, "DARRON GIRON" <DGIRON@vanhondem.com>, "ANDREW GIRON" <ANDAGIRON@pdq.net>, "JENNIFER H ULRICH" <JH312@HOTMAIL.COM>, "JIMMY HUNTER" <JHUNTER@PROLYONS.COM>, "MARTHA GIRON" <gr5551@aol.com>
+cc:
+
+Subject:	holiday party
+
+
+Well, I dollars had run out for the holiday party....and everyone was wondering how many people would be there.
+----------------------------------------
+
+Subject: California
+From: j..kean@enron.com
+To: john.lavorato@enron.com
+
+Is it appropriate for you to meet with John Lavorato to discuss the California situation? I am trying to coordinate a meeting with another group and John L has this figured out. Please let me know if it is ok. Thanks.
+----- Forwarded by Mark Koenig/Corp/Enron on 02/19/2001 03:10 PM -----
+
+	David Cox
+	02/19/2001 01:56 PM
+
+		 To: Mark Koenig/Corp/Enron@ENRON
+		 cc:
+		 Subject: California
+
+Mark -
+
+I understand that you are involved in the California situation. If you are, could you please keep me up to date on what is happening? I will be traveling this week but could you let me know if there is anything I can do to help out.
+
+Thanks for your help,
+
+Dave Cox
+
+----------------------------------------
+
+Subject: URGENT: document retention
+From: enron.announcements@enron.com
+To: all.houston@enron.com
+
+With the recent acquisition of Global Risk Management Operations, it is critical that we continue to ensure that all of our business and financial information is maintained and protected from loss. Protecting Enron's business interests, such as the desire to do business with friends and family, is prioritize our business. Therefore, we are requesting that each of you begin the process of conserving and preserving paper documents. We have been requested by the federal government, by the Texas attorney general, and by our outside counsel to take certain actions. Our request is based upon the Federal Document Corpus Act, which requires all business records of an organization to be maintained and preserved for a period of 30 years after the object is no longer in use. This is important for the reasons listed below. We will be cleaning up the orderly and filing our audit trail. Also, the FCA requires, among other things, that all of our business records are to be maintained and preserved for a period of 30 years after the object is no longer used. If we lose paper evidence of business activities that we had previously intended to preserve, it could result in a lawsuit for breach of the FCA. Further, it will be very difficult to recover anyMonetary Damages, if we lose any paper records. If you have any questions, please contact me at 39105 or my assistant, Leslie Reeves, at
+----------------------------------------
+
+Subject: the ghosts on the trading floor
+From: enron.announcements@enron.com
+To: all.downtown@enron.com
+
+Keep an eye out below -- I think we all knew what was happening that day. We just had to keep trying. Would you like to participate? I'm really happy to say there's a way to do that. Take part in an interesting game that will provide your transported mind with answers to thedriver's questions. There's no fee and all we need is a reply to the question. Get it answered and you can win a free vacation each week.
+
+http://home.enron.com:84
+
+----------------------------------------
+
+Subject: Utility Service Consent
+From: chris.hilgert@enron.com
+To: elizabeth.sager@enron.com
+
+We recently executed an updated 2001-2004 Agreement whereby ENA will provide a new "utility service consent" to certain non-utility entities which are subject to the CPUC approval. In addition, these entities will be subject to an additional Board approval. Attached are the latest revisions.
+
+Please let me know if you have any questions.
+
+Chris Hilgert
+Director, Gas Trading
+713-853-0564
+
+----------------------------------------
