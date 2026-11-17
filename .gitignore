@@ -172,10 +172,15 @@ cython_debug/
 # Language model data and training runs
 lm/data/
 lm/runs/*
-!lm/runs/overnight.sh
-# keep the final small and medium models (weights via git lfs), minus optimizer state
+!lm/runs/overnight*.sh
+# keep the final models (weights via git lfs), minus optimizer state.
+# fine-tuned models are committed as bf16 copies; the fp32 originals stay local.
 !lm/runs/small/
 !lm/runs/medium/
+!lm/runs/smol135-bf16/
+!lm/runs/qwen05-bf16/
 !lm/runs/small/*.json
 !lm/runs/medium/*.json
+!lm/runs/smol135-bf16/*.json
+!lm/runs/qwen05-bf16/*.json
 lm/runs/*/optimizer.safetensors

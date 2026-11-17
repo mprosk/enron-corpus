@@ -13,6 +13,10 @@ A run directory (lm/runs/<name>/) holds:
 
 Example:
   python lm/train.py --preset tiny --name smoke --tokens 20e6
+
+Fine-tuning a pretrained model instead (plain-header data from encode_data.py --format plain):
+  python lm/train.py --name smol --init-from HuggingFaceTB/SmolLM2-135M --data-dir lm/data/smol \
+      --format plain --lr 3e-4
 """
 
 import argparse
@@ -31,7 +35,6 @@ from mlx.utils import tree_flatten, tree_map, tree_unflatten
 from mlx_lm.models import llama
 from tokenizers import Tokenizer
 
-DATA = Path("lm/data")
 RUNS = Path("lm/runs")
 
 PRESETS = {
@@ -41,13 +44,12 @@ PRESETS = {
     "medium": (768, 12, 12, 2048),
 }
 
-SAMPLE_PROMPTS = [
-    "<|email|><|subject|>Re: holiday party\n",
-    "<|email|><|subject|>California\n",
-    "<|email|><|subject|>URGENT: document retention\n",
-    "<|email|><|subject|>the ghosts on the trading floor\n",
-    "<|email|>",
-]
+SUBJECTS = ["Re: holiday party", "California", "URGENT: document retention", "the ghosts on the trading floor"]
+SAMPLE_PROMPTS = {
+    "special": [f"<|email|><|subject|>{s}\n" for s in SUBJECTS] + ["<|email|>"],
+    "plain": [f"Subject: {s}\nFrom:" for s in SUBJECTS] + ["Subject:"],
+}
+END_TOKEN = {"special": "<|end|>", "plain": "<|endoftext|>"}
 
 
 def model_config(preset: str, vocab_size: int, context: int) -> dict:
@@ -67,8 +69,16 @@ def model_config(preset: str, vocab_size: int, context: int) -> dict:
     }
 
 
+def pretrained_model(config: dict) -> nn.Module:
+    """Empty model of whatever architecture a pretrained config names (llama, qwen2, ...)."""
+    from mlx_lm.utils import _get_classes
+
+    model_cls, args_cls = _get_classes(config)
+    return model_cls(args_cls.from_dict(config))
+
+
 def build_model(config: dict) -> llama.Model:
-    model = llama.Model(llama.ModelArgs(**config))
+    model = llama.Model(llama.ModelArgs.from_dict(config))
     # small-init for a from-scratch run: N(0, 0.02), output projections scaled by depth
     std = 0.02
     out_std = std / math.sqrt(2 * config["num_hidden_layers"])
@@ -91,9 +101,20 @@ def count_params(model: nn.Module) -> tuple[int, int]:
     return total, emb
 
 
+def resolve_pretrained(name: str) -> Path:
+    """A local model dir, or a Hugging Face repo id (downloaded on first use)."""
+    if Path(name).exists():
+        return Path(name)
+    from huggingface_hub import snapshot_download
+
+    return Path(snapshot_download(name, allow_patterns=["*.json", "*.safetensors", "*.txt"]))
+
+
 class Batches:
-    def __init__(self, split: str, context: int, batch_size: int, seed: int):
-        self.data = np.memmap(DATA / f"{split}.bin", dtype=np.uint16, mode="r")
+    def __init__(self, data_dir: Path, split: str, context: int, batch_size: int, seed: int):
+        meta = data_dir / "meta.json"
+        dtype = json.loads(meta.read_text())["dtype"] if meta.exists() else "uint16"
+        self.data = np.memmap(data_dir / f"{split}.bin", dtype=dtype, mode="r")
         self.context, self.batch_size = context, batch_size
         self.rng = np.random.default_rng(seed)
 
@@ -152,10 +173,12 @@ def main() -> None:
     ap.add_argument("--max-steps", type=int, default=None, help="stop early (for benchmarking)")
     ap.add_argument("--seed", type=int, default=1337)
     ap.add_argument("--resume", action="store_true")
+    ap.add_argument("--init-from", help="start from pretrained weights: HF repo id or local dir (ignores --preset)")
+    ap.add_argument("--data-dir", default="lm/data", help="dir with {train,val}.bin")
+    ap.add_argument("--format", choices=["special", "plain"], default="special",
+                    help="email layout of the data: our special tokens, or plain text headers")
     args = ap.parse_args()
 
-    tokenizer = Tokenizer.from_file(str(DATA / "tokenizer/tokenizer.json"))
-    end_id = tokenizer.token_to_id("<|end|>")
     run = RUNS / args.name
 
     if args.resume:
@@ -166,16 +189,33 @@ def main() -> None:
         if run.exists() and any(run.iterdir()):
             raise SystemExit(f"{run} already exists; use --resume or a new --name")
         run.mkdir(parents=True, exist_ok=True)
-        config = model_config(args.preset, tokenizer.get_vocab_size(), args.context)
+        if args.init_from:
+            src = resolve_pretrained(args.init_from)
+            config = json.loads((src / "config.json").read_text())
+            tok_files = [f for f in src.iterdir() if f.suffix in (".json", ".txt") and f.name != "config.json"]
+        else:
+            vocab = Tokenizer.from_file("lm/data/tokenizer/tokenizer.json").get_vocab_size()
+            config = model_config(args.preset, vocab, args.context)
+            tok_files = list(Path("lm/data/tokenizer").iterdir())
         (run / "config.json").write_text(json.dumps(config, indent=2))
-        for f in (DATA / "tokenizer").iterdir():
+        for f in tok_files:
             shutil.copy(f, run / f.name)
+
+    data_dir = Path(args.data_dir)
+    tokenizer = Tokenizer.from_file(str(run / "tokenizer.json"))
+    end_id = tokenizer.token_to_id(END_TOKEN[args.format])
 
     tokens_per_step = args.batch_size * args.grad_accum * args.context
     total_steps = int(args.tokens // tokens_per_step)
 
     mx.random.seed(args.seed)
-    model = build_model(config)
+    model = pretrained_model(config) if args.init_from else build_model(config)
+    if args.init_from and not args.resume:
+        weights = {}
+        for f in sorted(resolve_pretrained(args.init_from).glob("*.safetensors")):
+            weights.update(mx.load(str(f)))
+        model.load_weights(list(model.sanitize(weights).items()))
+    model.set_dtype(mx.float32)
     n_params, n_emb = count_params(model)
 
     warmup = min(args.warmup_steps, max(1, total_steps // 10))
@@ -196,11 +236,11 @@ def main() -> None:
         start_step = saved["step"]
         print(f"Resuming {run} from step {start_step}")
 
-    train = Batches("train", args.context, args.batch_size, seed=args.seed + start_step)
-    val = Batches("val", args.context, args.batch_size, seed=0)
+    train = Batches(data_dir, "train", args.context, args.batch_size, seed=args.seed + start_step)
+    val = Batches(data_dir, "val", args.context, args.batch_size, seed=0)
     epochs = args.tokens / len(train.data)
     print(
-        f"Model: {args.preset}, {n_params / 1e6:.1f}M params ({(n_params - n_emb) / 1e6:.1f}M non-embedding)\n"
+        f"Model: {args.init_from or args.preset}, {n_params / 1e6:.1f}M params ({(n_params - n_emb) / 1e6:.1f}M non-embedding)\n"
         f"Training: {total_steps:,} steps x {tokens_per_step:,} tokens = {args.tokens / 1e6:.0f}M tokens "
         f"({epochs:.2f} epochs of {len(train.data) / 1e6:.0f}M)"
     )
@@ -217,6 +257,8 @@ def main() -> None:
             l, g = grad_step(*train.sample())
             loss = l if loss is None else loss + l
             grads = g if grads is None else tree_map(mx.add, grads, g)
+            # evaluate now, or MLX keeps every micro-batch's activations alive until the update
+            mx.eval(grads, loss)
         if args.grad_accum > 1:
             grads = tree_map(lambda g: g / args.grad_accum, grads)
             loss = loss / args.grad_accum
@@ -233,7 +275,7 @@ def main() -> None:
     def write_samples(step: int) -> None:
         with open(run / "samples.txt", "a") as f:
             f.write(f"\n{'=' * 30} step {step:,} {'=' * 30}\n")
-            for i, p in enumerate(SAMPLE_PROMPTS):
+            for i, p in enumerate(SAMPLE_PROMPTS[args.format]):
                 ids = tokenizer.encode(p, add_special_tokens=False).ids
                 out = generate(model, ids, max_tokens=300, temp=0.8, end_id=end_id, seed=i)
                 f.write("\n" + tokenizer.decode(ids + out, skip_special_tokens=False) + "\n" + "-" * 40 + "\n")
@@ -247,6 +289,12 @@ def main() -> None:
     log = csv.writer(log_file)
     if new_log:
         log.writerow(["step", "tokens", "train_loss", "val_loss", "lr", "grad_norm", "tok_per_s", "elapsed_s"])
+
+    if args.init_from and start_step == 0:
+        base_val = evaluate()
+        print(f"step      0  val {base_val:.3f}  (pretrained model before fine-tuning)", flush=True)
+        log.writerow([0, 0, "", f"{base_val:.4f}", "", "", "", 0])
+        write_samples(0)
 
     end_step = total_steps if args.max_steps is None else min(total_steps, start_step + args.max_steps)
     t0 = time.time()

@@ -49,7 +49,7 @@ def resolve_model(name: str) -> Path:
     return path
 
 
-def build_prompt(subject, sender, to, body) -> str:
+def build_prompt(subject, sender, to, body, plain: bool) -> str:
     """Prefill the headers in order; the model continues from the first one left blank."""
     fields = [("subject", subject), ("from", sender), ("to", to), ("body", body)]
     given = [v is not None for _, v in fields]
@@ -60,16 +60,19 @@ def build_prompt(subject, sender, to, body) -> str:
         later = [n for (n, v) in fields[first_missing:] if v is not None]
         sys.exit(f"--{later[0]} needs --{missing} too (the email is written in order: subject, from, to, body)")
 
-    prompt = "<|email|><|subject|>"
+    # plain: fine-tuned pretrained models (SmolLM, Qwen) use ordinary text headers
+    marks = ("Subject:", " ", "\nFrom:", " ", "\nTo:", " ", "\n\n") if plain else \
+        ("<|email|><|subject|>", "", "\n<|from|>", "", "\n<|to|>", "", "\n<|body|>\n")
+    prompt = marks[0]
     if subject is None:
         return prompt
-    prompt += f"{subject}\n<|from|>"
+    prompt += f"{marks[1]}{subject}{marks[2]}"
     if sender is None:
         return prompt
-    prompt += f"{sender}\n<|to|>"
+    prompt += f"{marks[3]}{sender}{marks[4]}"
     if to is None:
         return prompt
-    prompt += f"{to}\n<|body|>\n"
+    prompt += f"{marks[5]}{to}{marks[6]}"
     if body is None:
         return prompt
     return prompt + body
@@ -91,7 +94,8 @@ def main() -> None:
     ap.add_argument("--body", metavar="TEXT", help="start the body with this text; needs --from and --to")
 
     g = ap.add_argument_group("model")
-    g.add_argument("-m", "--model", default="medium", help="run name in lm/runs/ or a path (default: medium)")
+    g.add_argument("-m", "--model", default="medium",
+                   help="run name in lm/runs/ (medium, small, smol135, qwen05) or a path (default: medium)")
 
     g = ap.add_argument_group("sampling")
     g.add_argument("-t", "--temp", type=float, default=0.8, help="temperature; higher = weirder, 0 = greedy (default: 0.8)")
@@ -112,7 +116,8 @@ def main() -> None:
     args = ap.parse_args()
 
     model, tok = load(str(resolve_model(args.model)))
-    prompt = build_prompt(args.subject, args.sender, args.to, args.body)
+    plain = "<|subject|>" not in tok.get_vocab()
+    prompt = build_prompt(args.subject, args.sender, args.to, args.body, plain)
     prompt_ids = tok.encode(prompt, add_special_tokens=False)
 
     max_tokens = args.max_tokens
